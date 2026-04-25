@@ -100,27 +100,39 @@
 
 .social-container {
   display: flex;
-  gap: 15px;
-  margin-bottom: 30px;
+  justify-content: center;
+  margin-bottom: 25px;
+  width: 100%;
 }
 
-.social-btn {
-  width: 45px;
-  height: 45px;
-  border: 1px solid #ddd;
-  border-radius: 50%;
+.social-btn.google {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--white);
-  color: var(--text-color);
-  font-size: 1.2rem;
-  transition: var(--transition);
+  gap: 12px;
+  background: white;
+  color: #1e293b;
+  border: 1.5px solid #e2e8f0;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  cursor: pointer;
+  width: 100%;
+  max-width: 320px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
-.social-btn:hover {
-  background: #f8f9fa;
-  transform: translateY(-2px);
+.social-btn.google:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+}
+
+.social-btn.google svg {
+  color: #ea4335; /* Google Red */
 }
 
 .auth-form {

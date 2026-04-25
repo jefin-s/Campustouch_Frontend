@@ -61,3 +61,12 @@ export const approveStudent = async (id) => {
     throw error.response?.data || error.message;
   }
 };
+
+export const getStudentProfile = async () => {
+  try {
+    const response = await api.get('/Student/profile');
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+};

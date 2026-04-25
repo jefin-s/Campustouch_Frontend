@@ -4,8 +4,14 @@ import {
   Layers, Calendar, ClipboardList, LayoutDashboard, LogOut
 } from 'lucide-react';
 import DashboardLayout from './DashboardLayout';
-import ManagementTable from '../admin/ManagementTable';
+import DepartmentManagement from '../admin/DepartmentManagement';
+import ProgramManagement from '../admin/ProgramManagement';
+import SemesterManagement from '../admin/SemesterManagement';
+import SubjectManagement from '../admin/SubjectManagement';
+import ClassManagement from '../admin/ClassManagement';
+import AssignSubjectManagement from '../admin/AssignSubjectManagement';
 import StudentManagement from '../admin/StudentManagement';
+import StaffManagement from '../admin/StaffManagement';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -91,54 +97,25 @@ const AdminDashboard = () => {
         return <StudentManagement />;
 
       case 'staff':
-        return (
-          <ManagementTable 
-            title="Staff Management" 
-            columns={[
-              { header: 'Name', accessor: 'name' },
-              { header: 'Designation', accessor: 'designation' },
-              { header: 'Department', accessor: 'dept' },
-              { header: 'Joined', accessor: 'joined' }
-            ]}
-            data={[
-              { name: 'Dr. Robert Wilson', designation: 'Professor', dept: 'CSE', joined: '2020-05-15' },
-              { name: 'Sarah Miller', designation: 'Lecturer', dept: 'ECE', joined: '2021-08-20' }
-            ]}
-          />
-        );
+        return <StaffManagement />;
 
       case 'departments':
-        return (
-          <ManagementTable 
-            title="Departments" 
-            columns={[
-              { header: 'Dept Name', accessor: 'name' },
-              { header: 'Head of Dept', accessor: 'hod' },
-              { header: 'Total Staff', accessor: 'staffCount' }
-            ]}
-            data={[
-              { name: 'Computer Science', hod: 'Dr. Wilson', staffCount: 15 },
-              { name: 'Electronics', hod: 'Dr. Sarah', staffCount: 12 }
-            ]}
-          />
-        );
+        return <DepartmentManagement />;
 
       case 'courses':
-        return (
-          <ManagementTable 
-            title="Course Management" 
-            columns={[
-              { header: 'Course Name', accessor: 'name' },
-              { header: 'Code', accessor: 'code' },
-              { header: 'Duration', accessor: 'duration' },
-              { header: 'Department', accessor: 'dept' }
-            ]}
-            data={[
-              { name: 'B.Tech CS', code: 'CS101', duration: '4 Years', dept: 'Computer Science' },
-              { name: 'M.Tech AI', code: 'AI202', duration: '2 Years', dept: 'Computer Science' }
-            ]}
-          />
-        );
+        return <ProgramManagement />;
+
+      case 'semesters':
+        return <SemesterManagement />;
+
+      case 'subjects':
+        return <SubjectManagement />;
+
+      case 'assign':
+        return <AssignSubjectManagement />;
+
+      case 'classes':
+        return <ClassManagement />;
 
       default:
         return (

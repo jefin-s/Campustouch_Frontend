@@ -1,11 +1,12 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import AuthPage from './features/auth/AuthPage';
+import GoogleCallback from './features/auth/GoogleCallback';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import RoleBasedRedirect from './components/RoleBasedRedirect';
 import AdminDashboard from './features/dashboard/AdminDashboard';
-import StudentDashboard from './features/dashboard/StudentDashboard';
-import StaffDashboard from './features/dashboard/StaffDashboard';
+import StudentDashboard from './features/student/StudentDashboard';
+import StaffDashboard from './features/staff/StaffDashboard';
 import ApplicantDashboard from './features/dashboard/ApplicantDashboard';
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           {/* Public Auth Route */}
           <Route path="/auth" element={<AuthPage />} />
+          <Route path="/auth/callback" element={<GoogleCallback />} />
           
           {/* Smart Root Redirect */}
           <Route path="/" element={<RoleBasedRedirect />} />

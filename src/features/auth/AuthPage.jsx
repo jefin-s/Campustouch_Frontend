@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { User, Mail, Lock, GraduationCap, AtSign, Phone, Loader2 } from 'lucide-react';
-import { FaFacebookF, FaGoogle, FaLinkedinIn } from 'react-icons/fa';
+import { FaGoogle } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import { login, register } from '../../services/authService';
+import { login, register, initiateGoogleLogin } from '../../services/authService';
 import { useAuth } from '../../context/AuthContext';
 import './AuthPage.css';
 
@@ -126,9 +126,14 @@ const AuthPage = () => {
             >
               <h1 className="auth-title">Sign In</h1>
               <div className="social-container">
-                <button className="social-btn"><FaFacebookF size={20} /></button>
-                <button className="social-btn"><FaGoogle size={20} /></button>
-                <button className="social-btn"><FaLinkedinIn size={20} /></button>
+                <button 
+                  className="social-btn google" 
+                  onClick={initiateGoogleLogin}
+                  type="button"
+                >
+                  <FaGoogle size={20} />
+                  <span>Continue with Google</span>
+                </button>
               </div>
               <p className="auth-subtitle">or use your account</p>
 
@@ -174,9 +179,14 @@ const AuthPage = () => {
             >
               <h1 className="auth-title">Create Account</h1>
               <div className="social-container">
-                <button className="social-btn"><FaFacebookF size={20} /></button>
-                <button className="social-btn"><FaGoogle size={20} /></button>
-                <button className="social-btn"><FaLinkedinIn size={20} /></button>
+                <button 
+                  className="social-btn google" 
+                  onClick={initiateGoogleLogin}
+                  type="button"
+                >
+                  <FaGoogle size={20} />
+                  <span>Continue with Google</span>
+                </button>
               </div>
               <p className="auth-subtitle">or use your email for registration</p>
 

@@ -37,6 +37,7 @@ export const AuthProvider = ({ children }) => {
     
     setAccessToken(token);
     const decoded = decodeToken(token);
+    console.log('Decoded JWT Payload:', decoded);
     
     // Determine the role
     let role = null;
@@ -54,13 +55,17 @@ export const AuthProvider = ({ children }) => {
       const roleClaims = [
         "http://schemas.microsoft.com/ws/2008/06/identity/claims/role",
         "role",
-        "roles"
+        "roles",
+        "Role",
+        "Roles",
+        "user_role"
       ];
       
       for (const claim of roleClaims) {
         if (decoded[claim]) {
           const claimValue = decoded[claim];
           role = Array.isArray(claimValue) ? claimValue[0] : claimValue;
+          console.log(`Matched Role Claim [${claim}]:`, role);
           break;
         }
       }
@@ -71,6 +76,7 @@ export const AuthProvider = ({ children }) => {
       role: role || 'Unknown'
     };
     
+    console.log('Final User Data Object:', userData);
     setUser(userData);
     return userData;
   };

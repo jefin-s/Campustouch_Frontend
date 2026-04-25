@@ -40,3 +40,8 @@ export const logout = async () => {
     console.error('Logout error:', error);
   }
 };
+
+export const initiateGoogleLogin = () => {
+  // Redirect directly to the backend endpoint which will handle the OAuth flow
+  window.location.href = 'https://localhost:7284/api/ExternalAuth/google-login';
+};
