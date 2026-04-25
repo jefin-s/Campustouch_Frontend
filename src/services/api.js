@@ -7,10 +7,15 @@ const api = axios.create({
   withCredentials: true, // Required for HttpOnly cookies
 });
 
-let accessToken = null;
+let accessToken = localStorage.getItem('accessToken') || null;
 
 export const setAccessToken = (token) => {
   accessToken = token;
+  if (token) {
+    localStorage.setItem('accessToken', token);
+  } else {
+    localStorage.removeItem('accessToken');
+  }
 };
 
 export const getAccessToken = () => accessToken;

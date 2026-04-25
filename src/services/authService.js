@@ -6,9 +6,13 @@ export const login = async (email, password) => {
       Email: email, 
       Password: password 
     });
-    const { token } = response.data;
+    // Correctly extract from the nested 'data' property based on your backend response
+    const { token, roles } = response.data.data;
     setAccessToken(token);
-    return response.data;
+    
+    // Return the nested data object which contains token, email, roles, etc.
+    return response.data.data;
+
   } catch (error) {
     throw error.response?.data || error.message;
   }

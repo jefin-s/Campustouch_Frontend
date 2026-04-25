@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { User, Mail, Lock, GraduationCap, AtSign, Phone, Loader2 } from 'lucide-react';
 import { FaFacebookF, FaGoogle, FaLinkedinIn } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import { login, register } from '../../services/authService';
+import { useAuth } from '../../context/AuthContext';
 import './AuthPage.css';
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const { loginUser, user } = useAuth();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -16,6 +20,28 @@ const AuthPage = () => {
     password: '',
     phoneNumber: ''
   });
+
+  // Helper for case-insensitive role-based navigation
+  const navigateByRole = (role) => {
+    if (!role) return;
+    
+    const normalizedRole = String(role).toLowerCase().trim();
+    
+    if (normalizedRole === 'admin') navigate('/admin-dashboard');
+    else if (normalizedRole === 'student') navigate('/student-dashboard');
+    else if (normalizedRole === 'staff') navigate('/staff-dashboard');
+    else if (normalizedRole === 'applicant') navigate('/applicant-dashboard');
+    else {
+      setError(`Access Denied: Role '${role}' not recognized.`);
+    }
+  };
+
+  // Redirect if already logged in (e.g. on page load)
+  useEffect(() => {
+    if (user) {
+      navigateByRole(user.role);
+    }
+  }, [user, navigate]);
 
   const toggleAuth = () => {
     setIsLogin(!isLogin);
@@ -44,9 +70,21 @@ const AuthPage = () => {
 
     try {
       if (isLogin) {
-        await login(formData.email, formData.password);
-        // On success, redirect to dashboard
-        window.location.href = '/dashboard'; 
+        const responseData = await login(formData.email, formData.password);
+        // Based on your backend: { token: "...", roles: ["Admin"], ... }
+        const token = responseData?.token;
+        const rolesFromApi = responseData?.roles || responseData?.Roles;
+        
+        if (token) {
+          const userData = loginUser(token, rolesFromApi);
+          if (userData && userData.role && userData.role !== 'Unknown') {
+            navigateByRole(userData.role);
+          } else {
+            setError('Account verified, but no specific role was found.');
+          }
+        } else {
+          setError('Login failed: Token not received from server.');
+        }
       } else {
         await register(formData);
         // After registration, maybe switch to login or auto-login
@@ -70,7 +108,7 @@ const AuthPage = () => {
 
   return (
     <div className="auth-container">
-      <motion.div 
+      <motion.div
         className="auth-card"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -78,7 +116,7 @@ const AuthPage = () => {
       >
         <AnimatePresence mode="wait">
           {isLogin ? (
-            <motion.div 
+            <motion.div
               key="login"
               className="auth-panel"
               initial={{ x: -50, opacity: 0 }}
@@ -93,30 +131,30 @@ const AuthPage = () => {
                 <button className="social-btn"><FaLinkedinIn size={20} /></button>
               </div>
               <p className="auth-subtitle">or use your account</p>
-              
+
               {error && <div className="error-message">{error}</div>}
 
               <form className="auth-form" onSubmit={handleSubmit}>
                 <div className="input-group">
                   <Mail size={18} />
-                  <input 
-                    type="email" 
-                    placeholder="Email" 
-                    name="email" 
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    required 
+                    required
                   />
                 </div>
                 <div className="input-group">
                   <Lock size={18} />
-                  <input 
-                    type="password" 
-                    placeholder="Password" 
+                  <input
+                    type="password"
+                    placeholder="Password"
                     name="password"
                     value={formData.password}
                     onChange={handleInputChange}
-                    required 
+                    required
                   />
                 </div>
                 <a href="#" className="forgot-password">Forgot your password?</a>
@@ -126,7 +164,7 @@ const AuthPage = () => {
               </form>
             </motion.div>
           ) : (
-            <motion.div 
+            <motion.div
               key="register"
               className="auth-panel"
               initial={{ x: 50, opacity: 0 }}
@@ -143,61 +181,61 @@ const AuthPage = () => {
               <p className="auth-subtitle">or use your email for registration</p>
 
               {error && <div className={error.includes('successful') ? 'success-message' : 'error-message'}>{error}</div>}
-              
+
               <form className="auth-form" onSubmit={handleSubmit}>
                 <div className="input-group">
                   <User size={18} />
-                  <input 
-                    type="text" 
-                    placeholder="Full Name" 
-                    name="fullName" 
+                  <input
+                    type="text"
+                    placeholder="Full Name"
+                    name="fullName"
                     value={formData.fullName}
                     onChange={handleInputChange}
-                    required 
+                    required
                   />
                 </div>
                 <div className="input-group">
                   <Mail size={18} />
-                  <input 
-                    type="email" 
-                    placeholder="Email" 
-                    name="email" 
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    required 
+                    required
                   />
                 </div>
                 <div className="input-group">
                   <AtSign size={18} />
-                  <input 
-                    type="text" 
-                    placeholder="Username" 
-                    name="username" 
+                  <input
+                    type="text"
+                    placeholder="Username"
+                    name="username"
                     value={formData.username}
                     onChange={handleInputChange}
-                    required 
+                    required
                   />
                 </div>
                 <div className="input-group">
                   <Phone size={18} />
-                  <input 
-                    type="tel" 
-                    placeholder="Phone Number" 
-                    name="phoneNumber" 
+                  <input
+                    type="tel"
+                    placeholder="Phone Number"
+                    name="phoneNumber"
                     value={formData.phoneNumber}
                     onChange={handleInputChange}
-                    required 
+                    required
                   />
                 </div>
                 <div className="input-group">
                   <Lock size={18} />
-                  <input 
-                    type="password" 
-                    placeholder="Password" 
-                    name="password" 
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    name="password"
                     value={formData.password}
                     onChange={handleInputChange}
-                    required 
+                    required
                   />
                 </div>
                 <button type="submit" className="submit-btn" disabled={isLoading}>
@@ -211,7 +249,7 @@ const AuthPage = () => {
         <div className="auth-panel overlay">
           <div className="circle circle-1"></div>
           <div className="circle circle-2"></div>
-          
+
           <div className="auth-logo">
             <div className="auth-logo-icon">
               <GraduationCap size={24} />
