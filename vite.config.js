@@ -4,4 +4,7 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  // Base path is '/' for local dev and custom domains.
+  // The CI/CD pipeline sets VITE_BASE_URL to the GitHub Pages sub-path.
+  base: process.env.VITE_BASE_URL || '/',
 })

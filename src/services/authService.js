@@ -42,6 +42,12 @@ export const logout = async () => {
 };
 
 export const initiateGoogleLogin = () => {
-  // Redirect directly to the backend endpoint which will handle the OAuth flow
-  window.location.href = 'https://localhost:7284/api/ExternalAuth/google-login';
+  const loginUrl = 'https://localhost:7284/api/ExternalAuth/google-login';
+  // Use window.location.href for standard redirects
+  // If in a frame (like IDE preview), we might need to target the top window
+  if (window.self !== window.top) {
+    window.top.location.href = loginUrl;
+  } else {
+    window.location.href = loginUrl;
+  }
 };

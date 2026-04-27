@@ -112,9 +112,28 @@ const StudentManagement = () => {
   };
 
   const columns = [
+    { 
+      header: 'Student', 
+      accessor: 'fullName',
+      render: (row) => (
+        <div className="user-cell">
+          <div className="user-avatar">
+            {(row.profileImageUrl || row.profileImagePath) ? (
+              <img src={row.profileImageUrl || row.profileImagePath} alt={row.fullName} />
+            ) : (
+              <div className="avatar-placeholder">
+                {row.fullName?.charAt(0).toUpperCase()}
+              </div>
+            )}
+          </div>
+          <div className="user-info-text">
+            <div className="user-name-bold">{row.fullName}</div>
+            <div className="user-email-muted">{row.email}</div>
+          </div>
+        </div>
+      )
+    },
     { header: 'Admission No', accessor: 'admissionNumber' },
-    { header: 'Full Name', accessor: 'fullName' },
-    { header: 'Email', accessor: 'email' },
     { 
       header: 'Status', 
       accessor: 'isActive', 
@@ -138,6 +157,7 @@ const StudentManagement = () => {
         onDelete={handleDeleteClick}
         onEdit={handleEdit}
         onAdd={handleAddClick}
+        searchPlaceholder="Search by email or username..."
       />
 
       <StudentModal 

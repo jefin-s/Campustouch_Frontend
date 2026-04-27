@@ -14,11 +14,62 @@ import StudentManagement from '../admin/StudentManagement';
 import StaffManagement from '../admin/StaffManagement';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { getStudents } from '../../services/studentService';
+import { getAllStaff } from '../../services/staffService';
+import { departmentService } from '../../services/academicServices';
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
+  const [stats, setStats] = useState({
+    students: 0,
+    staff: 0,
+    departments: 0,
+    totalUsers: 0,
+    health: '98%'
+  });
+  const [isLoadingStats, setIsLoadingStats] = useState(false);
   const { logoutUser } = useAuth();
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    const fetchStats = async () => {
+      if (activeTab !== 'overview') return;
+      
+      setIsLoadingStats(true);
+      try {
+        const [studentRes, staffRes, deptRes] = await Promise.all([
+          getStudents(1, 1000), // Fetch a larger page to ensure accurate counting for small sets
+          getAllStaff(),
+          departmentService.getAll()
+        ]);
+
+        const studentList = studentRes.data || [];
+        const totalStudentCount = studentRes.totalCount || studentList.length;
+        const activeStudentCount = studentList.filter(s => s.isActive).length;
+        
+        const staffList = staffRes.data || staffRes || [];
+        const staffCount = Array.isArray(staffList) ? staffList.length : 0;
+        
+        const deptList = deptRes.data?.data || deptRes.data || [];
+        const deptCount = Array.isArray(deptList) ? deptList.length : 0;
+
+        setStats({
+          students: totalStudentCount,
+          activeStudents: activeStudentCount,
+          staff: staffCount,
+          departments: deptCount,
+          totalUsers: totalStudentCount + staffCount,
+          health: '98%'
+        });
+      } catch (error) {
+        console.error('Failed to fetch dashboard stats:', error);
+      } finally {
+        setIsLoadingStats(false);
+      }
+    };
+
+    fetchStats();
+  }, [activeTab]);
 
   const handleLogout = () => {
     logoutUser();
@@ -70,19 +121,27 @@ const AdminDashboard = () => {
             <div className="stats-grid">
               <div className="stat-card">
                 <div className="stat-label">Total Users</div>
-                <div className="stat-value">1,284</div>
+                <div className="stat-value">{isLoadingStats ? '...' : stats.totalUsers}</div>
               </div>
               <div className="stat-card">
                 <div className="stat-label">Active Staff</div>
-                <div className="stat-value">42</div>
+                <div className="stat-value">{isLoadingStats ? '...' : stats.staff}</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-label">Active Students</div>
+                <div className="stat-value">{isLoadingStats ? '...' : stats.activeStudents}</div>
               </div>
               <div className="stat-card">
                 <div className="stat-label">Total Students</div>
-                <div className="stat-value">1,120</div>
+                <div className="stat-value">{isLoadingStats ? '...' : stats.students}</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-label">Total Departments</div>
+                <div className="stat-value">{isLoadingStats ? '...' : stats.departments}</div>
               </div>
               <div className="stat-card">
                 <div className="stat-label">System Health</div>
-                <div className="stat-value">98%</div>
+                <div className="stat-value">{stats.health}</div>
               </div>
             </div>
             

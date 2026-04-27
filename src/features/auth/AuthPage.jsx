@@ -10,6 +10,7 @@ import './AuthPage.css';
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [error, setError] = useState('');
   const { loginUser, user } = useAuth();
   const navigate = useNavigate();
@@ -53,6 +54,11 @@ const AuthPage = () => {
       password: '',
       phoneNumber: ''
     });
+  };
+
+  const handleGoogleLogin = () => {
+    setIsGoogleLoading(true);
+    initiateGoogleLogin();
   };
 
   const handleInputChange = (e) => {
@@ -126,14 +132,19 @@ const AuthPage = () => {
             >
               <h1 className="auth-title">Sign In</h1>
               <div className="social-container">
-                <button 
-                  className="social-btn google" 
-                  onClick={initiateGoogleLogin}
-                  type="button"
+                <a 
+                  href="https://localhost:7284/api/ExternalAuth/google-login"
+                  className={`social-btn google ${isGoogleLoading ? 'disabled' : ''}`}
+                  onClick={() => setIsGoogleLoading(true)}
+                  target="_top"
                 >
-                  <FaGoogle size={20} />
-                  <span>Continue with Google</span>
-                </button>
+                  {isGoogleLoading ? (
+                    <Loader2 className="animate-spin" size={20} />
+                  ) : (
+                    <FaGoogle size={20} />
+                  )}
+                  <span>{isGoogleLoading ? 'Connecting to Google...' : 'Continue with Google'}</span>
+                </a>
               </div>
               <p className="auth-subtitle">or use your account</p>
 
@@ -179,14 +190,19 @@ const AuthPage = () => {
             >
               <h1 className="auth-title">Create Account</h1>
               <div className="social-container">
-                <button 
-                  className="social-btn google" 
-                  onClick={initiateGoogleLogin}
-                  type="button"
+                <a 
+                  href="https://localhost:7284/api/ExternalAuth/google-login"
+                  className={`social-btn google ${isGoogleLoading ? 'disabled' : ''}`}
+                  onClick={() => setIsGoogleLoading(true)}
+                  target="_top"
                 >
-                  <FaGoogle size={20} />
-                  <span>Continue with Google</span>
-                </button>
+                  {isGoogleLoading ? (
+                    <Loader2 className="animate-spin" size={20} />
+                  ) : (
+                    <FaGoogle size={20} />
+                  )}
+                  <span>{isGoogleLoading ? 'Connecting to Google...' : 'Continue with Google'}</span>
+                </a>
               </div>
               <p className="auth-subtitle">or use your email for registration</p>
 

@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const loginUser = (token, rolesFromApi) => {
+  const loginUser = React.useCallback((token, rolesFromApi) => {
     if (!token) return null;
     
     setAccessToken(token);
@@ -79,12 +79,12 @@ export const AuthProvider = ({ children }) => {
     console.log('Final User Data Object:', userData);
     setUser(userData);
     return userData;
-  };
+  }, []);
 
-  const logoutUser = () => {
+  const logoutUser = React.useCallback(() => {
     setAccessToken(null);
     setUser(null);
-  };
+  }, []);
 
   useEffect(() => {
     const token = getAccessToken();

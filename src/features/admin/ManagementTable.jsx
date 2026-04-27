@@ -10,27 +10,49 @@ const ManagementTable = ({
   onDelete, 
   isLoading,
   pagination = { current: 1, total: 1, pageSize: 10 },
-  onPageChange
+  onPageChange,
+  searchPlaceholder   // when provided, render ONLY a search bar (no filter dropdown / apply btn)
 }) => {
   return (
     <div className="mgmt-card">
       <div className="mgmt-header">
-        <div className="mgmt-title-group">
-          <h2>{title}</h2>
-          <span className="count-badge">{pagination.total} records</span>
-        </div>
-        <div className="mgmt-actions">
-          <div className="search-input">
-            <Search size={18} />
-            <input type="text" placeholder={`Search ${title.toLowerCase()}...`} />
+        <div className="mgmt-header-top">
+          <div className="mgmt-title-group">
+            <h2>{title}</h2>
+            <span className="count-badge">{pagination.total} {title.toLowerCase()}</span>
           </div>
-          <button className="filter-btn">
-            <Filter size={18} />
-          </button>
           <button className="add-btn" onClick={onAdd}>
             <Plus size={18} />
-            <span>Add New</span>
+            <span>Add New {title.replace(' Management', '')}</span>
           </button>
+        </div>
+        
+        <div className="mgmt-filters-row">
+          {searchPlaceholder ? (
+            /* Simple search-only bar */
+            <div className="search-input search-input--wide">
+              <Search size={18} className="search-icon" />
+              <input type="text" placeholder={searchPlaceholder} />
+            </div>
+          ) : (
+            /* Full filter bar */
+            <>
+              <div className="search-wrapper">
+                <div className="search-input">
+                  <Search size={18} />
+                  <input type="text" placeholder={`Search by name, ID or email...`} />
+                </div>
+                <div className="filter-dropdown-mock">
+                  <span>Filter by Status</span>
+                  <ChevronRight size={14} className="rotate-90" />
+                </div>
+              </div>
+              <button className="apply-filters-btn">
+                <Filter size={18} />
+                <span>Apply filters</span>
+              </button>
+            </>
+          )}
         </div>
       </div>
 
