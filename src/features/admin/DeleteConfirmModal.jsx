@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { AlertTriangle, Loader2, X } from 'lucide-react';
 
 const DeleteConfirmModal = ({ isOpen, onClose, onConfirm, itemName, isLoading }) => {
