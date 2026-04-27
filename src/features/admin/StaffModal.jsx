@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { X, Loader2, UserCheck } from 'lucide-react';
 
 const StaffModal = ({ isOpen, onClose, onSubmit, isLoading, initialData }) => {
-  const defaultState = {
+  const defaultState = useMemo(() => ({
     firstName: '',
     lastName: '',
     email: '',
     phoneNumber: '',
     departmentId: '',
     designation: '',
-  };
+  }), []);
 
   const [formData, setFormData] = useState(defaultState);
 
@@ -29,7 +29,7 @@ const StaffModal = ({ isOpen, onClose, onSubmit, isLoading, initialData }) => {
         setFormData(defaultState);
       }
     }
-  }, [isOpen, initialData]);
+  }, [isOpen, initialData, defaultState]);
 
   if (!isOpen) return null;
 

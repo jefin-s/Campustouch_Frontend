@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { X, Upload, Camera, Loader2 } from 'lucide-react';
 
 const StudentModal = ({ isOpen, onClose, onSubmit, isLoading, initialData }) => {
-  const defaultState = {
+  const defaultState = useMemo(() => ({
     CourseId: '',
     DepartmentId: '',
     AdmissionDate: new Date().toISOString().split('T')[0],
@@ -17,7 +17,7 @@ const StudentModal = ({ isOpen, onClose, onSubmit, isLoading, initialData }) => 
     GuardianPhone: '',
     BloodGroup: '',
     AdmissionNumber: '',
-  };
+  }), []);
 
   const [formData, setFormData] = useState(defaultState);
   const [imageFile, setImageFile] = useState(null);
@@ -51,7 +51,7 @@ const StudentModal = ({ isOpen, onClose, onSubmit, isLoading, initialData }) => 
         setImageFile(null);
       }
     }
-  }, [isOpen, initialData]);
+  }, [isOpen, initialData, defaultState]);
 
   if (!isOpen) return null;
 

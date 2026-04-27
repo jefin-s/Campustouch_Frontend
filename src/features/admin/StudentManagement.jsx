@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import ManagementTable from './ManagementTable';
 
 import StudentModal from './StudentModal';
@@ -7,7 +7,6 @@ import {
   getStudents, 
   getStudentById,
   deleteStudent, 
-  approveStudent, 
   createStudent, 
   updateStudent 
 } from '../../services/studentService';
@@ -66,6 +65,7 @@ const StudentManagement = () => {
       setStudentToDelete(null);
       fetchStudents(pagination.current);
     } catch (error) {
+      console.error(error);
       alert('Failed to delete student');
     } finally {
       setIsDeleting(false);
@@ -79,6 +79,7 @@ const StudentManagement = () => {
       setSelectedStudent(details.data || details);
       setIsModalOpen(true);
     } catch (error) {
+      console.error(error);
       alert('Failed to fetch student details');
     } finally {
       setIsLoading(false);

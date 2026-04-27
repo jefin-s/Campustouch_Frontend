@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { User, Mail, Lock, GraduationCap, AtSign, Phone, Loader2 } from 'lucide-react';
 import { FaGoogle } from 'react-icons/fa';
@@ -23,7 +23,7 @@ const AuthPage = () => {
   });
 
   // Helper for case-insensitive role-based navigation
-  const navigateByRole = (role) => {
+  const navigateByRole = useCallback((role) => {
     if (!role) return;
     
     const normalizedRole = String(role).toLowerCase().trim();
@@ -35,14 +35,14 @@ const AuthPage = () => {
     else {
       setError(`Access Denied: Role '${role}' not recognized.`);
     }
-  };
+  }, [navigate]);
 
   // Redirect if already logged in (e.g. on page load)
   useEffect(() => {
     if (user) {
       navigateByRole(user.role);
     }
-  }, [user, navigate]);
+  }, [user, navigateByRole]);
 
   const toggleAuth = () => {
     setIsLogin(!isLogin);
@@ -135,7 +135,7 @@ const AuthPage = () => {
                 <a 
                   href="https://localhost:7284/api/ExternalAuth/google-login"
                   className={`social-btn google ${isGoogleLoading ? 'disabled' : ''}`}
-                  onClick={() => setIsGoogleLoading(true)}
+                  onClick={handleGoogleLogin}
                   target="_top"
                 >
                   {isGoogleLoading ? (
@@ -193,7 +193,7 @@ const AuthPage = () => {
                 <a 
                   href="https://localhost:7284/api/ExternalAuth/google-login"
                   className={`social-btn google ${isGoogleLoading ? 'disabled' : ''}`}
-                  onClick={() => setIsGoogleLoading(true)}
+                  onClick={handleGoogleLogin}
                   target="_top"
                 >
                   {isGoogleLoading ? (

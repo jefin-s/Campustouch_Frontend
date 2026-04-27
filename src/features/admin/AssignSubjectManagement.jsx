@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Search, User, Book, Trash2, Plus, Loader2, ChevronRight } from 'lucide-react';
 import { getAllStaff, getStaffSubjects, assignSubjects, removeSubjectFromStaff } from '../../services/staffService';
 import { subjectService } from '../../services/academicServices';
@@ -75,6 +75,7 @@ const AssignSubjectManagement = () => {
       setIsModalOpen(false);
       handleStaffSelect(selectedStaff); // Refresh list
     } catch (error) {
+      console.error(error);
       alert('Failed to assign subject');
     } finally {
       setIsSubmitting(false);
@@ -147,7 +148,7 @@ const AssignSubjectManagement = () => {
                 ) : staffSubjects.length === 0 ? (
                   <div className="empty-state">No subjects assigned yet</div>
                 ) : (
-                  staffSubjects.map(subject => {
+                  staffSubjects.map((subject, index) => {
                     // Resilient ID extraction (check nested subject object if exists)
                     const sId = subject.subjectId || subject.id || subject.subject?.id;
                     const sName = subject.name || subject.subjectName || subject.subject?.name;
@@ -155,7 +156,7 @@ const AssignSubjectManagement = () => {
                     const sCredits = subject.credits || subject.subject?.credits;
 
                     return (
-                      <div key={sId || Math.random()} className="subject-card">
+                      <div key={sId || index} className="subject-card">
                         <div className="subject-icon">
                           <Book size={20} />
                         </div>

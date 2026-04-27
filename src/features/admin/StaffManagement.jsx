@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import ManagementTable from './ManagementTable';
 import StaffModal from './StaffModal';
 import DeleteConfirmModal from './DeleteConfirmModal';
@@ -49,6 +49,7 @@ const StaffManagement = () => {
       setSelectedStaff(details.data || details);
       setIsModalOpen(true);
     } catch (error) {
+      console.error(error);
       alert('Failed to fetch staff details');
     } finally {
       setIsLoading(false);
@@ -67,6 +68,7 @@ const StaffManagement = () => {
       setStaffToDelete(null);
       fetchStaff();
     } catch (error) {
+      console.error(error);
       alert('Failed to delete staff');
     } finally {
       setIsDeleting(false);

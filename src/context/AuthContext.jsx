@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { setAccessToken, getAccessToken } from '../services/api';
 
 const AuthContext = createContext();
@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const loginUser = React.useCallback((token, rolesFromApi) => {
+  const loginUser = useCallback((token, rolesFromApi) => {
     if (!token) return null;
     
     setAccessToken(token);
@@ -81,7 +81,7 @@ export const AuthProvider = ({ children }) => {
     return userData;
   }, []);
 
-  const logoutUser = React.useCallback(() => {
+  const logoutUser = useCallback(() => {
     setAccessToken(null);
     setUser(null);
   }, []);
@@ -92,7 +92,7 @@ export const AuthProvider = ({ children }) => {
       loginUser(token);
     }
     setLoading(false);
-  }, []);
+  }, [loginUser]);
 
   return (
     <AuthContext.Provider value={{ user, loading, loginUser, logoutUser }}>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   Users, Building2, BookOpen, Book, UserCheck, 
   Layers, Calendar, ClipboardList, LayoutDashboard, LogOut
@@ -31,7 +31,7 @@ const AdminDashboard = () => {
   const { logoutUser } = useAuth();
   const navigate = useNavigate();
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchStats = async () => {
       if (activeTab !== 'overview') return;
       

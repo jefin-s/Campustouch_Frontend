@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import ManagementTable from './ManagementTable';
 import GenericModal from './GenericModal';
 import DeleteConfirmModal from './DeleteConfirmModal';
@@ -55,6 +55,7 @@ const SubjectManagement = () => {
       setItemToDelete(null);
       fetchItems();
     } catch (error) {
+      console.error(error);
       alert('Error deleting subject');
     } finally {
       setIsDeleting(false);

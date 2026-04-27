@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { 
-  LayoutDashboard, UserCheck, BookOpen, 
-  Calendar, ClipboardList, LogOut, Bell, ClipboardCheck
+  LayoutDashboard, BookOpen, 
+  Calendar, LogOut, ClipboardCheck
 } from 'lucide-react';
 import DashboardLayout from '../dashboard/DashboardLayout';
 import AttendanceMarking from './AttendanceMarking';
@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 const StaffDashboard = () => {
   const [activeTab, setActiveTab] = useState('attendance');
-  const { logoutUser, user } = useAuth();
+  const { logoutUser } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {

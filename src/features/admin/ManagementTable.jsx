@@ -1,5 +1,4 @@
-import React from 'react';
-import { Plus, Search, Filter, Edit, Trash2, CheckCircle, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
+import { Plus, Search, Filter, Edit, Trash2, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 
 const ManagementTable = ({ 
   title, 

@@ -1,4 +1,3 @@
-import React from 'react';
 import { LayoutDashboard, FileText, Upload, HelpCircle, LogOut } from 'lucide-react';
 import DashboardLayout from './DashboardLayout';
 import { useAuth } from '../../context/AuthContext';

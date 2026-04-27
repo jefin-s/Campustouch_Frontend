@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { 
-  LayoutDashboard, User, BookOpen, 
-  Calendar, ClipboardList, LogOut, Bell
+  User, BookOpen, 
+  Calendar, ClipboardList, LogOut
 } from 'lucide-react';
 import DashboardLayout from '../dashboard/DashboardLayout';
 import StudentProfile from './StudentProfile';
@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 const StudentDashboard = () => {
   const [activeTab, setActiveTab] = useState('profile');
-  const { logoutUser, user } = useAuth();
+  const { logoutUser } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {

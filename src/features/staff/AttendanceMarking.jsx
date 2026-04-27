@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { 
-  CheckCircle, XCircle, Calendar, Users, 
-  BookOpen, Search, Save, Loader2, ClipboardCheck, Clock
+  CheckCircle, XCircle, 
+  Search, Save, Loader2, ClipboardCheck, Clock
 } from 'lucide-react';
 import { markAttendance } from '../../services/attendanceService';
 import { classService, subjectService } from '../../services/academicServices';
@@ -71,6 +71,7 @@ const AttendanceMarking = () => {
       });
       setMarkedStatuses(newStatuses);
     } catch (error) {
+      console.error(error);
       alert('Failed to fetch students');
     } finally {
       setIsStudentsLoading(false);
@@ -116,6 +117,15 @@ const AttendanceMarking = () => {
       setIsSubmitting(false);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="table-loader">
+        <Loader2 className="animate-spin" size={40} />
+        <p>Loading attendance setup...</p>
+      </div>
+    );
+  }
 
   const filteredStudents = students.filter(s => 
     (s.fullName || `${s.firstName} ${s.lastName}`).toLowerCase().includes(searchTerm.toLowerCase())

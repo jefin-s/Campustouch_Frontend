@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { X, Loader2 } from 'lucide-react';
 
 const GenericModal = ({ isOpen, onClose, onSubmit, isLoading, initialData, title, fields }) => {

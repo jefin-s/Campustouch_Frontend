@@ -55,6 +55,7 @@ const DepartmentManagement = () => {
       setItemToDelete(null);
       fetchItems();
     } catch (error) {
+      console.error(error);
       alert('Error deleting department');
     } finally {
       setIsDeleting(false);
