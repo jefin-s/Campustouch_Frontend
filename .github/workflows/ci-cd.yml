@@ -1,0 +1,87 @@
+name: CI / CD — CampusTouch Frontend
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+  # Allow triggering manually from the GitHub Actions UI
+  workflow_dispatch:
+
+# Grant GITHUB_TOKEN the permissions required to deploy to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only allow one concurrent deployment; skip in-progress runs
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '20'
+  APP_DIR: campus_app          # sub-directory that holds package.json
+
+jobs:
+  # ──────────────────────────────────────────────
+  # JOB 1 – Continuous Integration (lint + build)
+  # ──────────────────────────────────────────────
+  ci:
+    name: 🔍 Lint & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ⬇️ Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: ${{ env.APP_DIR }}/package-lock.json
+
+      - name: 📦 Install dependencies
+        working-directory: ${{ env.APP_DIR }}
+        run: npm ci
+
+      - name: 🔎 Lint (ESLint)
+        working-directory: ${{ env.APP_DIR }}
+        run: npm run lint
+
+      - name: 🏗️ Production build
+        working-directory: ${{ env.APP_DIR }}
+        run: npm run build
+        env:
+          # Vite base path for GitHub Pages: /<repo-name>/
+          # Change this to '/' if you use a custom domain or Vercel/Netlify
+          VITE_BASE_URL: '/'
+
+      # Upload the built artefact so the deploy job can use it
+      - name: 📤 Upload Pages artefact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ env.APP_DIR }}/dist
+
+  # ──────────────────────────────────────────────
+  # JOB 2 – Continuous Deployment (GitHub Pages)
+  # Only runs on pushes to main/master, NOT on PRs
+  # ──────────────────────────────────────────────
+  deploy:
+    name: 🚀 Deploy to GitHub Pages
+    needs: ci
+    runs-on: ubuntu-latest
+
+    # Skip deployment on pull requests — only deploy merged code
+    if: github.event_name != 'pull_request'
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: 🌐 Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
