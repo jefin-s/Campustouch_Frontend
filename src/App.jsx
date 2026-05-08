@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import AuthPage from './features/auth/AuthPage';
+import LandingPage from './features/auth/LandingPage';
 import GoogleCallback from './features/auth/GoogleCallback';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -15,7 +15,7 @@ function App() {
       <Router>
         <Routes>
           {/* Public Auth Route */}
-          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/auth" element={<LandingPage />} />
           <Route path="/auth/callback" element={<GoogleCallback />} />
           
           {/* Smart Root Redirect */}

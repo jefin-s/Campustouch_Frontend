@@ -14,6 +14,7 @@ import {
 const StudentManagement = () => {
   const [students, setStudents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -27,6 +28,7 @@ const StudentManagement = () => {
 
   const fetchStudents = useCallback(async (page = 1) => {
     setIsLoading(true);
+    setError(null);
     try {
       const response = await getStudents(page, pagination.pageSize);
       
@@ -44,6 +46,8 @@ const StudentManagement = () => {
       }
     } catch (error) {
       console.error('Failed to fetch students:', error);
+      const errMsg = error?.message || error?.response?.data?.message || 'Failed to fetch students. Please check if the backend is running.';
+      setError(errMsg);
     } finally {
       setIsLoading(false);
     }
@@ -148,6 +152,44 @@ const StudentManagement = () => {
 
   return (
     <>
+      {error && (
+        <div style={{
+          background: 'rgba(255, 59, 48, 0.1)',
+          border: '1px solid rgba(255, 59, 48, 0.3)',
+          borderRadius: '12px',
+          padding: '16px 20px',
+          marginBottom: '20px',
+          color: '#ff3b30',
+          fontSize: '14px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px'
+        }}>
+          <span style={{ fontSize: '18px' }}>⚠️</span>
+          <div>
+            <strong>Backend Error:</strong> {error}
+            <br />
+            <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '12px' }}>
+              Please check if the backend server is running and configured correctly.
+            </span>
+          </div>
+          <button 
+            onClick={() => fetchStudents(pagination.current)} 
+            style={{
+              marginLeft: 'auto',
+              background: 'rgba(255,255,255,0.1)',
+              border: '1px solid rgba(255,255,255,0.2)',
+              borderRadius: '8px',
+              padding: '6px 16px',
+              color: '#fff',
+              cursor: 'pointer',
+              fontSize: '13px'
+            }}
+          >
+            Retry
+          </button>
+        </div>
+      )}
       <ManagementTable 
         title="Student Management"
         columns={columns}

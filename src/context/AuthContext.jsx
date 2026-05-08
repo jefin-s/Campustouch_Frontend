@@ -54,11 +54,15 @@ export const AuthProvider = ({ children }) => {
     else if (decoded) {
       const roleClaims = [
         "http://schemas.microsoft.com/ws/2008/06/identity/claims/role",
+        "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/role",
         "role",
         "roles",
         "Role",
         "Roles",
-        "user_role"
+        "user_role",
+        "user_roles",
+        "authority",
+        "authorities"
       ];
       
       for (const claim of roleClaims) {

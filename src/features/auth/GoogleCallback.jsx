@@ -73,7 +73,7 @@ const GoogleCallback = () => {
         {!error ? (
           <>
             <div style={{ position: 'relative' }}>
-              <Loader2 className="animate-spin" style={{ color: '#4f46e5' }} size={64} />
+              <Loader2 className="animate-spin" style={{ color: 'var(--primary-color)' }} size={64} />
               <div style={{ 
                 position: 'absolute', 
                 top: '50%', 
@@ -81,7 +81,7 @@ const GoogleCallback = () => {
                 transform: 'translate(-50%, -50%)',
                 width: '12px',
                 height: '12px',
-                background: '#4f46e5',
+                background: 'var(--primary-color)',
                 borderRadius: '50%'
               }}></div>
             </div>
@@ -107,7 +107,7 @@ const GoogleCallback = () => {
                   gap: '8px',
                   width: '100%',
                   padding: '12px',
-                  background: '#4f46e5',
+                  background: 'var(--primary-color)',
                   color: 'white',
                   borderRadius: '12px',
                   fontWeight: '600',

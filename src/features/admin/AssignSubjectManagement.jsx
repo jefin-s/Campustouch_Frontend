@@ -150,7 +150,12 @@ const AssignSubjectManagement = () => {
                 ) : (
                   staffSubjects.map((subject, index) => {
                     // Resilient ID extraction (check nested subject object if exists)
-                    const sId = subject.subjectId || subject.id || subject.subject?.id;
+                    // const sId = subject.subjectId || subject.id || subject.subject?.id;
+                    // const sId = subject.subjectId ?? subject.subject?.id;
+                    const sId = subject.subjectId ?? subject.subject?.id;
+                    console.log(subject)
+
+
                     const sName = subject.name || subject.subjectName || subject.subject?.name;
                     const sCode = subject.code || subject.subjectCode || subject.subject?.code;
                     const sCredits = subject.credits || subject.subject?.credits;
@@ -158,6 +163,7 @@ const AssignSubjectManagement = () => {
                     return (
                       <div key={sId || index} className="subject-card">
                         <div className="subject-icon">
+
                           <Book size={20} />
                         </div>
                         <div className="subject-info">

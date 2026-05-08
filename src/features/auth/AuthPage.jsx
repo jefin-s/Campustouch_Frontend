@@ -28,11 +28,15 @@ const AuthPage = () => {
     
     const normalizedRole = String(role).toLowerCase().trim();
     
-    if (normalizedRole === 'admin') navigate('/admin-dashboard');
-    else if (normalizedRole === 'student') navigate('/student-dashboard');
-    else if (normalizedRole === 'staff') navigate('/staff-dashboard');
-    else if (normalizedRole === 'applicant') navigate('/applicant-dashboard');
-    else {
+    if (normalizedRole === 'admin' || normalizedRole === 'administrator') {
+      navigate('/admin-dashboard');
+    } else if (normalizedRole === 'student') {
+      navigate('/student-dashboard');
+    } else if (normalizedRole === 'staff' || normalizedRole === 'faculty') {
+      navigate('/staff-dashboard');
+    } else if (normalizedRole === 'applicant') {
+      navigate('/applicant-dashboard');
+    } else {
       setError(`Access Denied: Role '${role}' not recognized.`);
     }
   }, [navigate]);
@@ -77,9 +81,13 @@ const AuthPage = () => {
     try {
       if (isLogin) {
         const responseData = await login(formData.email, formData.password);
-        // Based on your backend: { token: "...", roles: ["Admin"], ... }
         const token = responseData?.token;
-        const rolesFromApi = responseData?.roles || responseData?.Roles;
+        
+        // Robust role extraction
+        const rolesFromApi = responseData?.roles || 
+                            responseData?.Roles || 
+                            responseData?.role || 
+                            responseData?.Role;
         
         if (token) {
           const userData = loginUser(token, rolesFromApi);
@@ -93,9 +101,8 @@ const AuthPage = () => {
         }
       } else {
         await register(formData);
-        // After registration, maybe switch to login or auto-login
+        setError('Registration successful! Please login.'); // Using error state for message
         setIsLogin(true);
-        setError('Registration successful! Please login.');
       }
     } catch (err) {
       if (err.errors) {
@@ -148,7 +155,11 @@ const AuthPage = () => {
               </div>
               <p className="auth-subtitle">or use your account</p>
 
-              {error && <div className="error-message">{error}</div>}
+              {error && (
+                <div className={error.toLowerCase().includes('successful') ? 'success-message' : 'error-message'}>
+                  {error}
+                </div>
+              )}
 
               <form className="auth-form" onSubmit={handleSubmit}>
                 <div className="input-group">
