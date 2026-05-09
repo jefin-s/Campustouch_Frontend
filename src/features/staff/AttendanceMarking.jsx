@@ -3,9 +3,11 @@ import {
   CheckCircle, XCircle, 
   Search, Save, Loader2, ClipboardCheck, Clock
 } from 'lucide-react';
+import toast from 'react-hot-toast';
 import { markAttendance } from '../../services/attendanceService';
 import { classService, subjectService } from '../../services/academicServices';
 import { getStudents } from '../../services/studentService';
+import { getApiMessage } from '../../utils/apiMessage';
 
 const AttendanceMarking = () => {
   const [classes, setClasses] = useState([]);
@@ -72,7 +74,7 @@ const AttendanceMarking = () => {
       setMarkedStatuses(newStatuses);
     } catch (error) {
       console.error(error);
-      alert('Failed to fetch students');
+      toast.error(getApiMessage(error, 'Failed to fetch students'));
     } finally {
       setIsStudentsLoading(false);
     }
@@ -87,7 +89,7 @@ const AttendanceMarking = () => {
 
   const handleSubmit = async () => {
     if (!selectedClass || !selectedSubject) {
-      alert('Please select both class and subject');
+      toast.error('Please select both class and subject');
       return;
     }
 
@@ -105,14 +107,14 @@ const AttendanceMarking = () => {
         students: studentPayload
       };
       
-      await markAttendance(payload);
-      alert('Attendance for all pages marked successfully!');
+      const response = await markAttendance(payload);
+      toast.success(getApiMessage(response, 'Attendance marked successfully!'));
       setMarkedStatuses({});
       setStudents([]);
       setSelectedClass('');
       setSelectedSubject('');
     } catch (error) {
-      alert('Failed to mark attendance: ' + (error.message || 'Unknown error'));
+      toast.error(getApiMessage(error, 'Failed to mark attendance.'));
     } finally {
       setIsSubmitting(false);
     }

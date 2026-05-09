@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
+import toast from 'react-hot-toast';
 import ManagementTable from './ManagementTable';
 import GenericModal from './GenericModal';
 import DeleteConfirmModal from './DeleteConfirmModal';
 import { subjectService } from '../../services/academicServices';
+import { getApiMessage } from '../../utils/apiMessage';
 
 const SubjectManagement = () => {
   const [data, setData] = useState([]);
@@ -33,16 +35,16 @@ const SubjectManagement = () => {
     setIsSubmitting(true);
     try {
       if (id) {
-        await subjectService.update(id, formData);
-        alert('Subject updated successfully!');
+        const response = await subjectService.update(id, formData);
+        toast.success(getApiMessage(response, 'Subject updated successfully!'));
       } else {
-        await subjectService.create(formData);
-        alert('Subject created successfully!');
+        const response = await subjectService.create(formData);
+        toast.success(getApiMessage(response, 'Subject created successfully!'));
       }
       setIsModalOpen(false);
       fetchItems();
     } catch (error) {
-      alert(error.message || 'Error saving subject');
+      toast.error(getApiMessage(error, 'Error saving subject'));
     } finally {
       setIsSubmitting(false);
     }
@@ -56,7 +58,7 @@ const SubjectManagement = () => {
       fetchItems();
     } catch (error) {
       console.error(error);
-      alert('Error deleting subject');
+      toast.error(getApiMessage(error, 'Error deleting subject'));
     } finally {
       setIsDeleting(false);
     }

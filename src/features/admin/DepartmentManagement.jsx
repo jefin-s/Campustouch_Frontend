@@ -1,8 +1,10 @@
 import  { useState, useEffect, useCallback } from 'react';
+import toast from 'react-hot-toast';
 import ManagementTable from './ManagementTable';
 import GenericModal from './GenericModal';
 import DeleteConfirmModal from './DeleteConfirmModal';
 import { departmentService } from '../../services/academicServices';
+import { getApiMessage } from '../../utils/apiMessage';
 
 const DepartmentManagement = () => {
   const [data, setData] = useState([]);
@@ -33,16 +35,16 @@ const DepartmentManagement = () => {
     setIsSubmitting(true);
     try {
       if (id) {
-        await departmentService.update(id, formData);
-        alert('Department updated successfully!');
+        const response = await departmentService.update(id, formData);
+        toast.success(getApiMessage(response, 'Department updated successfully!'));
       } else {
-        await departmentService.create(formData);
-        alert('Department created successfully!');
+        const response = await departmentService.create(formData);
+        toast.success(getApiMessage(response, 'Department created successfully!'));
       }
       setIsModalOpen(false);
       fetchItems();
     } catch (error) {
-      alert(error.message || 'Error saving department');
+      toast.error(getApiMessage(error, 'Error saving department'));
     } finally {
       setIsSubmitting(false);
     }
@@ -56,7 +58,7 @@ const DepartmentManagement = () => {
       fetchItems();
     } catch (error) {
       console.error(error);
-      alert('Error deleting department');
+      toast.error(getApiMessage(error, 'Error deleting department'));
     } finally {
       setIsDeleting(false);
     }

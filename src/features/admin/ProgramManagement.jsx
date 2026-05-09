@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
+import toast from 'react-hot-toast';
 import ManagementTable from './ManagementTable';
 import GenericModal from './GenericModal';
 import DeleteConfirmModal from './DeleteConfirmModal';
 import { programService } from '../../services/academicServices';
+import { getApiMessage } from '../../utils/apiMessage';
 
 const ProgramManagement = () => {
   const [data, setData] = useState([]);
@@ -33,16 +35,16 @@ const ProgramManagement = () => {
     setIsSubmitting(true);
     try {
       if (id) {
-        await programService.update(id, formData);
-        alert('Program updated successfully!');
+        const response = await programService.update(id, formData);
+        toast.success(getApiMessage(response, 'Program updated successfully!'));
       } else {
-        await programService.create(formData);
-        alert('Program created successfully!');
+        const response = await programService.create(formData);
+        toast.success(getApiMessage(response, 'Program created successfully!'));
       }
       setIsModalOpen(false);
       fetchItems();
     } catch (error) {
-      alert(error.message || 'Error saving program');
+      toast.error(getApiMessage(error, 'Error saving program'));
     } finally {
       setIsSubmitting(false);
     }
@@ -56,7 +58,7 @@ const ProgramManagement = () => {
       fetchItems();
     } catch (error) {
       console.error(error);
-      alert('Error deleting program');
+      toast.error(getApiMessage(error, 'Error deleting program'));
     } finally {
       setIsDeleting(false);
     }

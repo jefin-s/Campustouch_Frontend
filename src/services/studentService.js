@@ -1,8 +1,18 @@
 import api from './api';
 
-export const getStudents = async (pageNumber = 1, pageSize = 10) => {
+export const getStudents = async (pageNumber = 1, pageSize = 10, search = '') => {
   try {
-    const response = await api.get(`/Student?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+    const query = new URLSearchParams({
+      pageNumber: String(pageNumber),
+      pageSize: String(pageSize),
+    });
+
+    const trimmedSearch = search?.trim();
+    if (trimmedSearch) {
+      query.set('Search', trimmedSearch);
+    }
+
+    const response = await api.get(`/Student?${query.toString()}`);
     return response.data;
   } catch (error) {
     throw error.response?.data || error.message;

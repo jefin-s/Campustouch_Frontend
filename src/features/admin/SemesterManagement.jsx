@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
+import toast from 'react-hot-toast';
 import ManagementTable from './ManagementTable';
 import GenericModal from './GenericModal';
 import DeleteConfirmModal from './DeleteConfirmModal';
 import { semesterService } from '../../services/academicServices';
+import { getApiMessage } from '../../utils/apiMessage';
 
 const SemesterManagement = () => {
   const [data, setData] = useState([]);
@@ -33,16 +35,16 @@ const SemesterManagement = () => {
     setIsSubmitting(true);
     try {
       if (id) {
-        await semesterService.update(id, formData);
-        alert('Semester updated successfully!');
+        const response = await semesterService.update(id, formData);
+        toast.success(getApiMessage(response, 'Semester updated successfully!'));
       } else {
-        await semesterService.create(formData);
-        alert('Semester created successfully!');
+        const response = await semesterService.create(formData);
+        toast.success(getApiMessage(response, 'Semester created successfully!'));
       }
       setIsModalOpen(false);
       fetchItems();
     } catch (error) {
-      alert(error.message || 'Error saving semester');
+      toast.error(getApiMessage(error, 'Error saving semester'));
     } finally {
       setIsSubmitting(false);
     }
@@ -56,7 +58,7 @@ const SemesterManagement = () => {
       fetchItems();
     } catch (error) {
       console.error(error);
-      alert('Error deleting semester');
+      toast.error(getApiMessage(error, 'Error deleting semester'));
     } finally {
       setIsDeleting(false);
     }

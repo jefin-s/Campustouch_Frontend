@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
+import toast from 'react-hot-toast';
 import ManagementTable from './ManagementTable';
 import GenericModal from './GenericModal';
 import DeleteConfirmModal from './DeleteConfirmModal';
 import { classService } from '../../services/academicServices';
+import { getApiMessage } from '../../utils/apiMessage';
 
 const ClassManagement = () => {
   const [data, setData] = useState([]);
@@ -33,16 +35,16 @@ const ClassManagement = () => {
     setIsSubmitting(true);
     try {
       if (id) {
-        await classService.update(id, formData);
-        alert('Class updated successfully!');
+        const response = await classService.update(id, formData);
+        toast.success(getApiMessage(response, 'Class updated successfully!'));
       } else {
-        await classService.create(formData);
-        alert('Class created successfully!');
+        const response = await classService.create(formData);
+        toast.success(getApiMessage(response, 'Class created successfully!'));
       }
       setIsModalOpen(false);
       fetchItems();
     } catch (error) {
-      alert(error.message || 'Error saving class');
+      toast.error(getApiMessage(error, 'Error saving class'));
     } finally {
       setIsSubmitting(false);
     }
@@ -56,7 +58,7 @@ const ClassManagement = () => {
       fetchItems();
     } catch (error) {
       console.error(error);
-      alert('Error deleting class');
+      toast.error(getApiMessage(error, 'Error deleting class'));
     } finally {
       setIsDeleting(false);
     }

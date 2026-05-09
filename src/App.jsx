@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import LandingPage from './features/auth/LandingPage';
 import GoogleCallback from './features/auth/GoogleCallback';
 import { AuthProvider } from './context/AuthContext';
@@ -13,6 +14,18 @@ function App() {
   return (
     <AuthProvider>
       <Router>
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 3500,
+            style: {
+              borderRadius: '12px',
+              border: '1px solid #e2e8f0',
+              background: '#ffffff',
+              color: '#0f172a',
+            },
+          }}
+        />
         <Routes>
           {/* Public Auth Route */}
           <Route path="/auth" element={<LandingPage />} />

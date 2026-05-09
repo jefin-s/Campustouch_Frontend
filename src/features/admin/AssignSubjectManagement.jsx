@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Search, User, Book, Trash2, Plus, Loader2, ChevronRight } from 'lucide-react';
+import toast from 'react-hot-toast';
 import { getAllStaff, getStaffSubjects, assignSubjects, removeSubjectFromStaff } from '../../services/staffService';
 import { subjectService } from '../../services/academicServices';
 import GenericModal from './GenericModal';
+import { getApiMessage } from '../../utils/apiMessage';
 
 const AssignSubjectManagement = () => {
   const [staffList, setStaffList] = useState([]);
@@ -51,7 +53,7 @@ const AssignSubjectManagement = () => {
 
   const handleRemoveSubject = async (subjectId) => {
     if (!selectedStaff?.id || !subjectId) {
-      alert('Error: Missing staff or subject identifier');
+      toast.error('Missing staff or subject identifier');
       return;
     }
 
@@ -59,11 +61,12 @@ const AssignSubjectManagement = () => {
     
     try {
       console.log(`Removing assignment: StaffID=${selectedStaff.id}, SubjectID=${subjectId}`);
-      await removeSubjectFromStaff(selectedStaff.id, subjectId);
+      const response = await removeSubjectFromStaff(selectedStaff.id, subjectId);
+      toast.success(getApiMessage(response, 'Subject assignment removed successfully.'));
       handleStaffSelect(selectedStaff); // Refresh list
     } catch (error) {
       console.error('Removal failed:', error);
-      alert('Failed to remove subject: ' + (error.message || 'Unknown error'));
+      toast.error(getApiMessage(error, 'Failed to remove subject.'));
     }
   };
 
@@ -71,12 +74,13 @@ const AssignSubjectManagement = () => {
     setIsSubmitting(true);
     try {
       // Expecting formData to have subjectId
-      await assignSubjects(selectedStaff.id, [parseInt(formData.subjectId)]);
+      const response = await assignSubjects(selectedStaff.id, [parseInt(formData.subjectId)]);
+      toast.success(getApiMessage(response, 'Subject assigned successfully.'));
       setIsModalOpen(false);
       handleStaffSelect(selectedStaff); // Refresh list
     } catch (error) {
       console.error(error);
-      alert('Failed to assign subject');
+      toast.error(getApiMessage(error, 'Failed to assign subject.'));
     } finally {
       setIsSubmitting(false);
     }

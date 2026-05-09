@@ -10,7 +10,9 @@ const ManagementTable = ({
   isLoading,
   pagination = { current: 1, total: 1, pageSize: 10 },
   onPageChange,
-  searchPlaceholder   // when provided, render ONLY a search bar (no filter dropdown / apply btn)
+  searchPlaceholder,  // when provided, render ONLY a search bar (no filter dropdown / apply btn)
+  searchValue = '',
+  onSearchChange
 }) => {
   return (
     <div className="mgmt-card">
@@ -31,7 +33,12 @@ const ManagementTable = ({
             /* Simple search-only bar */
             <div className="search-input search-input--wide">
               <Search size={18} className="search-icon" />
-              <input type="text" placeholder={searchPlaceholder} />
+              <input
+                type="text"
+                placeholder={searchPlaceholder}
+                value={searchValue}
+                onChange={(e) => onSearchChange?.(e.target.value)}
+              />
             </div>
           ) : (
             /* Full filter bar */

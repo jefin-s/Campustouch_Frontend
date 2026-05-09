@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { User, Bell, Search, Menu } from 'lucide-react';
+import { User, Menu } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import './Dashboard.css';
 
@@ -17,14 +17,6 @@ const DashboardLayout = ({ children, title, roleColor, sidebar }) => {
             <h1>{title}</h1>
           </div>
           <div className="header-right">
-            <div className="search-bar">
-              <Search size={18} />
-              <input type="text" placeholder="Search..." />
-            </div>
-            <div className="icon-btn">
-              <Bell size={20} />
-              <span className="badge"></span>
-            </div>
             <div className="user-profile">
               <div className="user-info">
                 <span className="user-name">{user?.email?.split('@')[0]}</span>
