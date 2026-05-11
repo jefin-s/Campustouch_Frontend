@@ -63,9 +63,12 @@ export const deleteStudent = async (id) => {
   }
 };
 
-export const approveStudent = async (id) => {
+export const approveStudent = async (payload) => {
   try {
-    const response = await api.post('/Student/approve-student', { id });
+    // If payload is already an object, send it as is. 
+    // If it's just an ID (number/string), wrap it in an object for backward compatibility.
+    const body = typeof payload === 'object' ? payload : { id: payload };
+    const response = await api.post('/Student/approve-student', body);
     return response.data;
   } catch (error) {
     throw error.response?.data || error.message;

@@ -69,6 +69,7 @@ const DepartmentManagement = () => {
       <ManagementTable 
         title="Departments"
         columns={[
+          { header: 'Code', accessor: 'code' },
           { header: 'Name', accessor: 'name' },
           { header: 'Description', accessor: 'description' }
         ]}
@@ -88,6 +89,7 @@ const DepartmentManagement = () => {
         title="Department"
         fields={[
           { name: 'name', label: 'Department Name', required: true, placeholder: 'e.g. Computer Science' },
+          { name: 'code', label: 'Department Code', required: true, placeholder: 'e.g. CS' },
           { name: 'description', label: 'Description', type: 'textarea', placeholder: 'Briefly describe the department' }
         ]}
       />

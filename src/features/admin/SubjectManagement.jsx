@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 import ManagementTable from './ManagementTable';
 import GenericModal from './GenericModal';
 import DeleteConfirmModal from './DeleteConfirmModal';
-import { subjectService } from '../../services/academicServices';
+import { subjectService, semesterService } from '../../services/academicServices';
 import { getApiMessage } from '../../utils/apiMessage';
 
 const SubjectManagement = () => {
@@ -14,12 +14,17 @@ const SubjectManagement = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [itemToDelete, setItemToDelete] = useState(null);
+  const [semesters, setSemesters] = useState([]);
 
   const fetchItems = useCallback(async () => {
     setIsLoading(true);
     try {
-      const response = await subjectService.getAll();
-      setData(response.data.data || response.data || []);
+      const [subRes, semRes] = await Promise.all([
+        subjectService.getAll(),
+        semesterService.getAll()
+      ]);
+      setData(subRes.data.data || subRes.data || []);
+      setSemesters(semRes.data.data || semRes.data || []);
     } catch (error) {
       console.error('Fetch error:', error);
     } finally {
@@ -92,7 +97,16 @@ const SubjectManagement = () => {
           { name: 'name', label: 'Subject Name', required: true, placeholder: 'e.g. Data Structures' },
           { name: 'code', label: 'Subject Code', required: true, placeholder: 'e.g. CS201' },
           { name: 'credits', label: 'Credits', type: 'number', required: true },
-          { name: 'semesterId', label: 'Semester ID', type: 'number', required: true }
+          { 
+            name: 'semesterId', 
+            label: 'Semester', 
+            type: 'select', 
+            required: true,
+            options: semesters.map(s => ({ 
+              value: s.id, 
+              label: s.name || `Semester ${s.number}` 
+            }))
+          }
         ]}
       />
 

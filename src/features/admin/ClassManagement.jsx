@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 import ManagementTable from './ManagementTable';
 import GenericModal from './GenericModal';
 import DeleteConfirmModal from './DeleteConfirmModal';
-import { classService } from '../../services/academicServices';
+import { classService, departmentService, programService } from '../../services/academicServices';
 import { getApiMessage } from '../../utils/apiMessage';
 
 const ClassManagement = () => {
@@ -14,12 +14,20 @@ const ClassManagement = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [itemToDelete, setItemToDelete] = useState(null);
+  const [departments, setDepartments] = useState([]);
+  const [programs, setPrograms] = useState([]);
 
   const fetchItems = useCallback(async () => {
     setIsLoading(true);
     try {
-      const response = await classService.getAll();
-      setData(response.data.data || response.data || []);
+      const [classRes, deptRes, progRes] = await Promise.all([
+        classService.getAll(),
+        departmentService.getAll(),
+        programService.getAll()
+      ]);
+      setData(classRes.data.data || classRes.data || []);
+      setDepartments(deptRes.data.data || deptRes.data || []);
+      setPrograms(progRes.data.data || progRes.data || []);
     } catch (error) {
       console.error('Fetch error:', error);
     } finally {
@@ -91,8 +99,20 @@ const ClassManagement = () => {
         title="Class"
         fields={[
           { name: 'name', label: 'Class Name', required: true, placeholder: 'e.g. CS-2024-A' },
-          { name: 'departmentId', label: 'Department ID', type: 'number', required: true },
-          { name: 'courseId', label: 'Course ID', type: 'number', required: true },
+          { 
+            name: 'departmentId', 
+            label: 'Department', 
+            type: 'select', 
+            required: true,
+            options: departments.map(d => ({ value: d.id, label: d.name }))
+          },
+          { 
+            name: 'courseId', 
+            label: 'Program', 
+            type: 'select', 
+            required: true,
+            options: programs.map(p => ({ value: p.id, label: p.name }))
+          },
           { name: 'year', label: 'Year', type: 'number', required: true, placeholder: '2024' },
           { name: 'semester', label: 'Semester', type: 'number', required: true, placeholder: '1' }
         ]}

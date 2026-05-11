@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 import ManagementTable from './ManagementTable';
 import GenericModal from './GenericModal';
 import DeleteConfirmModal from './DeleteConfirmModal';
-import { programService } from '../../services/academicServices';
+import { programService, departmentService } from '../../services/academicServices';
 import { getApiMessage } from '../../utils/apiMessage';
 
 const ProgramManagement = () => {
@@ -14,12 +14,17 @@ const ProgramManagement = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [itemToDelete, setItemToDelete] = useState(null);
+  const [departments, setDepartments] = useState([]);
 
   const fetchItems = useCallback(async () => {
     setIsLoading(true);
     try {
-      const response = await programService.getAll();
-      setData(response.data.data || response.data || []);
+      const [progRes, deptRes] = await Promise.all([
+        programService.getAll(),
+        departmentService.getAll()
+      ]);
+      setData(progRes.data.data || progRes.data || []);
+      setDepartments(deptRes.data.data || deptRes.data || []);
     } catch (error) {
       console.error('Fetch error:', error);
     } finally {
@@ -92,7 +97,13 @@ const ProgramManagement = () => {
           { name: 'name', label: 'Program Name', required: true, placeholder: 'e.g. B.Tech CS' },
           { name: 'level', label: 'Level', required: true, placeholder: 'e.g. Undergraduate' },
           { name: 'duration', label: 'Duration (Years)', type: 'number', required: true },
-          { name: 'departmentId', label: 'Department ID', type: 'number', required: true }
+          { 
+            name: 'departmentId', 
+            label: 'Department', 
+            type: 'select', 
+            required: true,
+            options: departments.map(d => ({ value: d.id, label: d.name }))
+          }
         ]}
       />
 

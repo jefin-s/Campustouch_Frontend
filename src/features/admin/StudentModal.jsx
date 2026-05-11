@@ -2,12 +2,14 @@ import { useState, useEffect, useMemo } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { X, Upload, Camera, Loader2 } from 'lucide-react';
+import { departmentService, programService, semesterService } from '../../services/academicServices';
 
 const StudentModal = ({ isOpen, onClose, onSubmit, isLoading, initialData }) => {
   const defaultState = useMemo(
     () => ({
       CourseId: '',
       DepartmentId: '',
+      SemesterId: '',
       AdmissionDate: new Date().toISOString().split('T')[0],
       FirstName: '',
       LastName: '',
@@ -35,8 +37,9 @@ const StudentModal = ({ isOpen, onClose, onSubmit, isLoading, initialData }) => 
     }
 
     return {
-      CourseId: initialData.courseId || '',
+      CourseId: initialData.courseId || initialData.programId || '',
       DepartmentId: initialData.departmentId || '',
+      SemesterId: initialData.semesterId || '',
       AdmissionDate: initialData.admissionDate ? initialData.admissionDate.split('T')[0] : '',
       FirstName: initialData.firstName || '',
       LastName: initialData.lastName || '',
@@ -78,10 +81,14 @@ const StudentModal = ({ isOpen, onClose, onSubmit, isLoading, initialData }) => 
         'Email is required',
       ),
       PhoneNumber: applyRequiredForCreate(phoneValidation, 'Phone number is required'),
-      CourseId: applyRequiredForCreate(numberValidation('Course ID'), 'Course ID is required'),
+      CourseId: applyRequiredForCreate(numberValidation('Program'), 'Program is required'),
       DepartmentId: applyRequiredForCreate(
-        numberValidation('Department ID'),
-        'Department ID is required',
+        numberValidation('Department'),
+        'Department is required',
+      ),
+      SemesterId: applyRequiredForCreate(
+        numberValidation('Semester'),
+        'Semester is required',
       ),
       AdmissionDate: applyRequiredForCreate(
         Yup.string().trim(),
@@ -102,6 +109,31 @@ const StudentModal = ({ isOpen, onClose, onSubmit, isLoading, initialData }) => 
       AdmissionNumber: Yup.string().trim(),
     });
   }, [isEditMode]);
+
+  const [departments, setDepartments] = useState([]);
+  const [programs, setPrograms] = useState([]);
+  const [semesters, setSemesters] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [deptRes, progRes, semRes] = await Promise.all([
+          departmentService.getAll(),
+          programService.getAll(),
+          semesterService.getAll(),
+        ]);
+        setDepartments(deptRes.data?.data || deptRes.data || []);
+        setPrograms(progRes.data?.data || progRes.data || []);
+        setSemesters(semRes.data?.data || semRes.data || []);
+      } catch (error) {
+        console.error('Failed to fetch modal data:', error);
+      }
+    };
+
+    if (isOpen) {
+      fetchData();
+    }
+  }, [isOpen]);
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -278,31 +310,63 @@ const StudentModal = ({ isOpen, onClose, onSubmit, isLoading, initialData }) => 
                 ) : null}
               </div>
               <div className="form-group">
-                <label>Course ID</label>
-                <input
-                  type="number"
+                <label>Program</label>
+                <select
                   name="CourseId"
                   value={formik.values.CourseId}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   className={formik.touched.CourseId && formik.errors.CourseId ? 'input-error' : ''}
-                />
+                >
+                  <option value="">Select Program</option>
+                  {programs.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.name}
+                    </option>
+                  ))}
+                </select>
                 {formik.touched.CourseId && formik.errors.CourseId ? (
                   <p className="form-error">{formik.errors.CourseId}</p>
                 ) : null}
               </div>
               <div className="form-group">
-                <label>Department ID</label>
-                <input
-                  type="number"
+                <label>Department</label>
+                <select
                   name="DepartmentId"
                   value={formik.values.DepartmentId}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   className={formik.touched.DepartmentId && formik.errors.DepartmentId ? 'input-error' : ''}
-                />
+                >
+                  <option value="">Select Department</option>
+                  {departments.map((d) => (
+                    <option key={d.id} value={d.id}>
+                      {d.name}
+                    </option>
+                  ))}
+                </select>
                 {formik.touched.DepartmentId && formik.errors.DepartmentId ? (
                   <p className="form-error">{formik.errors.DepartmentId}</p>
+                ) : null}
+              </div>
+              <div className="form-group">
+                <label>Semester</label>
+                <select
+                  name="SemesterId"
+                  value={formik.values.SemesterId}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  className={formik.touched.SemesterId && formik.errors.SemesterId ? 'input-error' : ''}
+                >
+                  <option value="">Select Semester</option>
+                  {semesters.map((s) => (
+                    <option key={s.id} value={s.id}>
+                      {s.name || `Semester ${s.number}`}
+                    </option>
+                  ))}
+                </select>
+                {formik.touched.SemesterId && formik.errors.SemesterId ? (
+                  <p className="form-error">{formik.errors.SemesterId}</p>
                 ) : null}
               </div>
               <div className="form-group">

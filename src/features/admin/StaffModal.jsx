@@ -1,7 +1,8 @@
-import { useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { X, Loader2, UserCheck } from 'lucide-react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { departmentService } from '../../services/academicServices';
 
 const StaffModal = ({ isOpen, onClose, onSubmit, isLoading, initialData }) => {
   const isEditMode = Boolean(initialData);
@@ -59,10 +60,27 @@ const StaffModal = ({ isOpen, onClose, onSubmit, isLoading, initialData }) => {
           .typeError('Department ID must be a number')
           .integer('Department ID must be a whole number')
           .positive('Department ID must be greater than zero'),
-        'Department ID is required',
+        'Department is required',
       ),
     });
   }, [isEditMode]);
+
+  const [departments, setDepartments] = useState([]);
+
+  useEffect(() => {
+    const fetchDepartments = async () => {
+      try {
+        const response = await departmentService.getAll();
+        setDepartments(response.data?.data || response.data || []);
+      } catch (error) {
+        console.error('Failed to fetch departments:', error);
+      }
+    };
+
+    if (isOpen) {
+      fetchDepartments();
+    }
+  }, [isOpen]);
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -166,9 +184,24 @@ const StaffModal = ({ isOpen, onClose, onSubmit, isLoading, initialData }) => {
                 {formik.touched.designation && formik.errors.designation ? <p className="form-error">{formik.errors.designation}</p> : null}
               </div>
               <div className="form-group">
-                <label>Department ID</label>
-                <input type="number" name="departmentId" value={formik.values.departmentId} onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder="Enter dept ID" className={formik.touched.departmentId && formik.errors.departmentId ? 'input-error' : ''} />
-                {formik.touched.departmentId && formik.errors.departmentId ? <p className="form-error">{formik.errors.departmentId}</p> : null}
+                <label>Department</label>
+                <select
+                  name="departmentId"
+                  value={formik.values.departmentId}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  className={formik.touched.departmentId && formik.errors.departmentId ? 'input-error' : ''}
+                >
+                  <option value="">Select Department</option>
+                  {departments.map((d) => (
+                    <option key={d.id} value={d.id}>
+                      {d.name}
+                    </option>
+                  ))}
+                </select>
+                {formik.touched.departmentId && formik.errors.departmentId ? (
+                  <p className="form-error">{formik.errors.departmentId}</p>
+                ) : null}
               </div>
             </div>
           </div>

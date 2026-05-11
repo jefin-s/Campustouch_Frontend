@@ -12,6 +12,7 @@ import ClassManagement from '../admin/ClassManagement';
 import AssignSubjectManagement from '../admin/AssignSubjectManagement';
 import StudentManagement from '../admin/StudentManagement';
 import StaffManagement from '../admin/StaffManagement';
+import ApplicantApproval from '../admin/ApplicantApproval';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { getStudents } from '../../services/studentService';
@@ -79,8 +80,9 @@ const AdminDashboard = () => {
 
   const menuItems = [
     { id: 'overview', label: 'Overview', icon: <LayoutDashboard size={20} /> },
+    { id: 'approvals', label: 'Approvals', icon: <UserCheck size={20} /> },
     { id: 'students', label: 'Students', icon: <Users size={20} /> },
-    { id: 'staff', label: 'Staff Management', icon: <UserCheck size={20} /> },
+    { id: 'staff', label: 'Staff Management', icon: <Shield size={20} /> },
     { id: 'departments', label: 'Departments', icon: <Building2 size={20} /> },
     { id: 'courses', label: 'Courses', icon: <BookOpen size={20} /> },
     { id: 'subjects', label: 'Subjects', icon: <Book size={20} /> },
@@ -358,6 +360,9 @@ const AdminDashboard = () => {
       
       case 'students':
         return <StudentManagement />;
+
+      case 'approvals':
+        return <ApplicantApproval />;
 
       case 'staff':
         return <StaffManagement />;
