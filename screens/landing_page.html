@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CampusTouch - Institutional Excellence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&amp;family=Inter:wght@400;500&amp;family=Public+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#00419d",
+                        "surface-dim": "#dbdadb",
+                        "on-error-container": "#93000a",
+                        "primary": "#094cb2",
+                        "surface": "#faf9fa",
+                        "on-error": "#ffffff",
+                        "secondary-container": "#dfe3e8",
+                        "on-surface": "#1b1c1d",
+                        "on-tertiary-fixed": "#211b00",
+                        "inverse-primary": "#b1c5ff",
+                        "secondary": "#5a5f63",
+                        "background": "#faf9fa",
+                        "surface-container-low": "#f5f3f4",
+                        "on-background": "#1b1c1d",
+                        "on-tertiary-container": "#4a3f00",
+                        "on-primary-fixed": "#001946",
+                        "tertiary-fixed": "#f9e37a",
+                        "outline": "#737784",
+                        "surface-container-highest": "#e3e2e3",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#dcc661",
+                        "primary-fixed-dim": "#b1c5ff",
+                        "on-secondary-container": "#606569",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#6d5e00",
+                        "surface-container-high": "#e9e8e9",
+                        "primary-fixed": "#d9e2ff",
+                        "on-secondary-fixed": "#171c20",
+                        "on-tertiary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "surface-variant": "#e3e2e3",
+                        "inverse-surface": "#303031",
+                        "surface-tint": "#2259bf",
+                        "tertiary-container": "#bfab49",
+                        "surface-container": "#efedee",
+                        "primary-container": "#3366cc",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-bright": "#faf9fa",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#434653",
+                        "on-primary-container": "#e7ebff",
+                        "secondary-fixed-dim": "#c2c7cc",
+                        "on-tertiary-fixed-variant": "#524600",
+                        "secondary-fixed": "#dfe3e8",
+                        "outline-variant": "#c3c6d5",
+                        "on-secondary-fixed-variant": "#42474b",
+                        "inverse-on-surface": "#f2f0f1"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {},
+                    "fontFamily": {
+                        "headline": ["Noto Serif"],
+                        "display": ["Noto Serif"],
+                        "body": ["Inter"],
+                        "label": ["Public Sans"]
+                    },
+                    "fontSize": {}
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface-container-lowest/80 backdrop-blur-md shadow-sm shadow-on-surface/5">
+<div class="flex justify-between items-center h-20 px-8 w-full max-w-screen-2xl mx-auto">
+<div class="flex items-center gap-8">
+<span class="font-display text-2xl font-bold tracking-tight text-primary">CampusTouch</span>
+<nav class="hidden md:flex gap-6">
+<a class="font-label text-on-surface-variant hover:text-primary transition-colors cursor-pointer active:opacity-70" href="#">Directory</a>
+<a class="font-label text-on-surface-variant hover:text-primary transition-colors cursor-pointer active:opacity-70" href="#">Archives</a>
+<a class="font-label text-on-surface-variant hover:text-primary transition-colors cursor-pointer active:opacity-70" href="#">Research</a>
+<a class="font-label text-on-surface-variant hover:text-primary transition-colors cursor-pointer active:opacity-70" href="#">Academics</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex gap-4 text-on-surface-variant">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-all active:opacity-70" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-all active:opacity-70" data-icon="settings">settings</span>
+</div>
+<button class="bg-gradient-to-r from-primary to-primary-container text-on-primary font-label px-6 py-2 rounded-lg cursor-pointer active:opacity-70 transition-opacity hidden md:block">
+                    Portal Access
+                </button>
+<img alt="User profile avatar" class="w-10 h-10 rounded-full object-cover border border-outline-variant/15" data-alt="A small, circular profile picture of a person with dark hair against a light background, representing a generic user avatar in a modern software interface. The style is clean and professional, suitable for a high-end academic portal." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMrj9l8MFCi82Akd3u9hw9grwK6XNuUoTWtahnfXG2xOi3CLOXIexy_l-oROHA-GCb6xiozfTFr_ebBMHEg8cEioQvSJqb6fxGOYbUh2EPn3xhE12waEazYRS1Q7WslUVif8_OlRZwPPANjaQqrV4cdUsZ7mWvM9kzIHoO57fNdZ2OMjnYiruRhGWP07BPwqjfWa6iRb8DSEpJjjN8fdv9MfBV1UrkN6-mKH2A_kHbZqae2L-gcU1JltI_B2eVSPx56eqWnIR0aP2e"/>
+</div>
+</div>
+</header>
+<main class="flex-grow pt-20">
+<!-- Hero Section -->
+<section class="section relative flex items-center px-6 md:px-16 overflow-hidden bg-canvas-parchment">
+    <div class="max-w-screen-2xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+        <div class="max-w-2xl">
+            <span class="inline-block tagline text-primary-on-dark uppercase text-sm mb-4">Institutional Excellence</span>
+            <h1 class="hero-display font-noto mb-6">
+                Cultivating Knowledge for the Future.
+            </h1>
+            <p class="lead mb-10 max-w-xl">
+                CampusTouch provides a premier environment for academic rigor, groundbreaking research, and the holistic development of tomorrow's leaders.
+            </p>
+            <div class="flex gap-4">
+                <button class="btn-pill">Access Portal</button>
+                <button class="btn-ghost flex items-center gap-2">Explore Programs <span class="material-symbols-outlined">arrow_forward</span></button>
+            </div>
+        </div>
+        <div class="relative h-[520px] rounded-[18px] overflow-hidden hidden lg:block product-shadow">
+            <img alt="University campus building" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDw727dorU7iVTEm5LxOxWJcf71a1L39kiIHZkCV5Xpy4CXXLE0iIM59OvRAJb--9f9drjY6jr27grG2U1yXhiHOyG4Cy2OVoxJMkZViH195U5H0suNQPukFty6N940p25KPzE6Mx3LTgrQbclwsxnYIkAQhLmyFPpcv0cscmZ-apOT0jipttrF-Cw9ae69ju4Fsa0rDaFKRTLRI1mj3y0a--sGgqSZyUy6K2xH6IfRxQmjsDOsHrhaPf4-9hWaXR2ue5lMvqnduH8z"/>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+        </div>
+    </div>
+    <!-- Decorative background element -->
+    <div class="absolute top-0 right-0 w-1/2 h-full bg-[color:var(--surface-tile-2)] -skew-x-12 origin-top-right -z-10 opacity-30"></div>
+</section>
+<!-- About Us Section -->
+<section class="section bg-canvas px-6 md:px-16">
+    <div class="max-w-screen-2xl mx-auto">
+        <div class="max-w-3xl mx-auto text-center">
+            <h2 class="display-md mb-6">About CampusTouch</h2>
+            <p class="body-copy text-on-background leading-relaxed mb-8">
+                CampusTouch envisions a future where digital academic management seamlessly integrates with scholarly tradition. Our platform empowers institutions to streamline operations while maintaining the highest standards of academic excellence and intellectual rigor.
+            </p>
+        </div>
+    </div>
+</section>
+<!-- Features Section -->
+<section class="section px-6 md:px-16 bg-canvas-parchment">
+    <div class="max-w-screen-2xl mx-auto">
+        <div class="mb-12 text-center">
+            <h2 class="display-md mb-4">Core Capabilities</h2>
+            <p class="body-copy max-w-2xl mx-auto text-lg">Tools designed for comprehensive academic stewardship.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Feature 1 -->
+            <div class="feature-card flex flex-col items-center">
+                <div class="w-16 h-16 bg-[color:var(--surface-pearl)] text-[color:var(--primary)] rounded-full flex items-center justify-center mb-6">
+                    <span class="material-symbols-outlined text-3xl">fact_check</span>
+                </div>
+                <h3 class="display-md text-2xl mb-4">Attendance Tracking</h3>
+                <p class="body-copy">Scholarly and precise monitoring of student engagement and participation.</p>
+            </div>
+            <!-- Feature 2 -->
+            <div class="feature-card flex flex-col items-center">
+                <div class="w-16 h-16 bg-[color:var(--surface-pearl)] text-[color:var(--primary)] rounded-full flex items-center justify-center mb-6">
+                    <span class="material-symbols-outlined text-3xl">school</span>
+                </div>
+                <h3 class="display-md text-2xl mb-4">Student Management</h3>
+                <p class="body-copy">Comprehensive student lifecycle tools from enrollment to graduation.</p>
+            </div>
+            <!-- Feature 3 -->
+            <div class="feature-card flex flex-col items-center">
+                <div class="w-16 h-16 bg-[color:var(--surface-pearl)] text-[color:var(--primary)] rounded-full flex items-center justify-center mb-6">
+                    <span class="material-symbols-outlined text-3xl">groups</span>
+                </div>
+                <h3 class="display-md text-2xl mb-4">Staff Management</h3>
+                <p class="body-copy">Empowering faculty and administration with streamlined workflows.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Academic Programs Bento Grid -->
+<section class="py-24 px-8 md:px-16 bg-surface-bright">
+<div class="max-w-screen-2xl mx-auto">
+<div class="mb-16">
+<h2 class="font-headline text-4xl text-on-surface mb-4">Academic Programs</h2>
+<p class="font-body text-on-surface-variant max-w-2xl text-lg">Discover our rigorous curriculum designed to challenge and inspire the next generation of scholars.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[250px]">
+<!-- Large Card -->
+<div class="md:col-span-2 md:row-span-2 bg-surface-container-low rounded-xl p-8 relative overflow-hidden group border border-outline-variant/15">
+<div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&amp;fit=crop&amp;q=80&amp;w=1000')] bg-cover bg-center opacity-20 mix-blend-multiply transition-opacity duration-500 group-hover:opacity-30" data-alt="A close-up view of an antique, leather-bound book open on a wooden desk, surrounded by scattered, slightly yellowed pages of text. The lighting is warm and directional, suggesting a quiet library or study environment. The mood is scholarly, archival, and deeply intellectual, fitting a high-end academic editorial aesthetic."></div>
+<div class="relative z-10 flex flex-col h-full justify-between">
+<div>
+<span class="bg-surface-container text-primary font-label px-3 py-1 rounded-full text-sm inline-flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-sm" data-icon="auto_stories">auto_stories</span>
+                                    Core Curriculum
+                                </span>
+<h3 class="font-headline text-3xl text-on-surface mb-2">The Humanities &amp; Sciences</h3>
+<p class="font-body text-on-surface-variant max-w-md">Our foundational programs offer a comprehensive exploration of human knowledge, fostering critical thinking and analytical skills essential for future leadership.</p>
+</div>
+<div>
+<a class="text-primary font-label hover:underline decoration-primary underline-offset-4 flex items-center gap-1" href="#">
+                                    View Syllabus Directory <span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Small Card 1 -->
+<div class="bg-surface-container rounded-xl p-6 flex flex-col justify-between border border-outline-variant/15 hover:bg-surface-container-high transition-colors">
+<div>
+<div class="w-12 h-12 bg-primary-container text-primary rounded-lg flex items-center justify-center mb-4">
+<span class="material-symbols-outlined" data-icon="science">science</span>
+</div>
+<h4 class="font-headline text-xl text-on-surface mb-2">Applied Sciences</h4>
+<p class="font-body text-sm text-on-surface-variant">Advanced laboratories and practical research methodologies.</p>
+</div>
+</div>
+<!-- Small Card 2 -->
+<div class="bg-surface-container rounded-xl p-6 flex flex-col justify-between border border-outline-variant/15 hover:bg-surface-container-high transition-colors">
+<div>
+<div class="w-12 h-12 bg-primary-container text-primary rounded-lg flex items-center justify-center mb-4">
+<span class="material-symbols-outlined" data-icon="gavel">gavel</span>
+</div>
+<h4 class="font-headline text-xl text-on-surface mb-2">Law &amp; Governance</h4>
+<p class="font-body text-sm text-on-surface-variant">Rigorous study of legal frameworks and societal structures.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-dim w-full py-12 mt-auto">
+<div class="flex flex-col md:flex-row justify-between items-center px-12 w-full max-w-screen-2xl mx-auto gap-6 md:gap-0">
+<span class="font-display italic text-lg text-on-surface">CampusTouch</span>
+<nav class="flex flex-wrap justify-center gap-6">
+<a class="font-body text-sm text-on-surface-variant hover:text-on-surface hover:underline decoration-tertiary transition-all duration-300" href="#">Privacy Policy</a>
+<a class="font-body text-sm text-on-surface-variant hover:text-on-surface hover:underline decoration-tertiary transition-all duration-300" href="#">Institutional Terms</a>
+<a class="font-body text-sm text-on-surface-variant hover:text-on-surface hover:underline decoration-tertiary transition-all duration-300" href="#">Accessibility</a>
+<a class="font-body text-sm text-on-surface-variant hover:text-on-surface hover:underline decoration-tertiary transition-all duration-300" href="#">Archives</a>
+</nav>
+<span class="font-body text-sm text-on-surface-variant">© 2024 CampusTouch University Press. All scholarly rights reserved.</span>
+</div>
+</footer>
+</body></html>

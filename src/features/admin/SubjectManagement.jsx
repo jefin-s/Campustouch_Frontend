@@ -77,7 +77,11 @@ const SubjectManagement = () => {
           { header: 'Code', accessor: 'code' },
           { header: 'Subject Name', accessor: 'name' },
           { header: 'Credits', accessor: 'credits' },
-          { header: 'Semester ID', accessor: 'semesterId' }
+          { 
+            header: 'Semester', 
+            accessor: 'semesterId',
+            render: (row) => semesters.find(s => s.id === row.semesterId)?.name || row.semesterId || 'N/A'
+          }
         ]}
         data={data}
         isLoading={isLoading}

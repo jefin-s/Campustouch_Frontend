@@ -1,18 +1,18 @@
 import { useState, useEffect, useCallback } from 'react';
 import toast from 'react-hot-toast';
 import ManagementTable from './ManagementTable';
-
 import StudentModal from './StudentModal';
 import DeleteConfirmModal from './DeleteConfirmModal';
-import { 
-  getStudents, 
+import {
+  getStudents,
   getStudentById,
-  deleteStudent, 
-  createStudent, 
-  updateStudent,
-  approveStudent
+  deleteStudent,
+  createStudent,
+  updateStudent
 } from '../../services/studentService';
 import { getApiMessage } from '../../utils/apiMessage';
+import { motion, AnimatePresence } from 'framer-motion';
+import { AlertCircle, RefreshCw, GraduationCap, Users, Mail, Sparkles } from 'lucide-react';
 
 const normalizeValue = (value) => String(value ?? '').trim().toLowerCase();
 
@@ -52,7 +52,6 @@ const StudentManagement = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [isApprovingAll, setIsApprovingAll] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [studentToDelete, setStudentToDelete] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -75,19 +74,23 @@ const StudentManagement = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await getStudents(page, pagination.pageSize, search);
+      const res = await getStudents(page, pagination.pageSize, search);
       
-      // Based on your response structure: { success: true, data: [...] }
-      if (response && response.data && Array.isArray(response.data)) {
-        setStudents(response.data);
-        // If your API doesn't return totalCount, we'll estimate it for now
-        setPagination(prev => ({ 
-          ...prev, 
-          current: page, 
-          total: response.totalCount || response.data.length 
+      // Robustly handle backend response structures
+      // The user provided format: res.data.items
+      const rowData = res.data?.items || res.data?.data || res.data || (Array.isArray(res) ? res : []);
+      const totalCount = res.data?.totalCount || res.data?.total || res.totalCount || res.total || (Array.isArray(rowData) ? rowData.length : 0);
+
+      if (Array.isArray(rowData)) {
+        setStudents(rowData);
+        setPagination(prev => ({
+          ...prev,
+          current: page,
+          total: totalCount
         }));
       } else {
         setStudents([]);
+        setPagination(prev => ({ ...prev, current: page, total: 0 }));
       }
     } catch (error) {
       console.error('Failed to fetch students:', error);
@@ -101,68 +104,6 @@ const StudentManagement = () => {
   useEffect(() => {
     fetchStudents(1, debouncedSearchQuery);
   }, [fetchStudents, debouncedSearchQuery]);
-
-  const handleApproveAllApplicants = async () => {
-    setIsApprovingAll(true);
-    try {
-      const basePageSize = Math.max(pagination.pageSize, 100);
-      const firstPageResponse = await getStudents(1, basePageSize);
-      const firstPageData = Array.isArray(firstPageResponse?.data) ? firstPageResponse.data : [];
-      const totalCount = firstPageResponse?.totalCount || firstPageData.length;
-
-      let allRows = [...firstPageData];
-      let currentPage = 2;
-
-      while (allRows.length < totalCount) {
-        const response = await getStudents(currentPage, basePageSize);
-        const pageRows = Array.isArray(response?.data) ? response.data : [];
-        if (pageRows.length === 0) break;
-        allRows = allRows.concat(pageRows);
-        currentPage += 1;
-      }
-
-      const allApplicants = allRows.filter((student) => isApplicantRecord(student));
-      if (allApplicants.length === 0) {
-        toast('No pending applicants found for approval.');
-        return;
-      }
-
-      const results = await Promise.all(
-        allApplicants.map(async (applicant) => {
-          const resolvedId = getResolvedStudentId(applicant);
-          if (!resolvedId) {
-            return { status: 'skipped' };
-          }
-
-          try {
-            await approveStudent(resolvedId);
-            return { status: 'approved' };
-          } catch (approvalError) {
-            console.error('Failed to approve applicant:', approvalError);
-            return { status: 'failed' };
-          }
-        })
-      );
-
-      const approvedCount = results.filter((result) => result.status === 'approved').length;
-      const failedCount = results.filter((result) => result.status === 'failed').length;
-      const skippedCount = results.filter((result) => result.status === 'skipped').length;
-
-      if (approvedCount > 0) {
-        toast.success(`${approvedCount} applicant${approvedCount > 1 ? 's' : ''} approved successfully.`);
-      }
-      if (failedCount > 0) {
-        toast.error(`Failed to approve ${failedCount} applicant${failedCount > 1 ? 's' : ''}.`);
-      }
-      if (skippedCount > 0) {
-        toast(`${skippedCount} record${skippedCount > 1 ? 's were' : ' was'} skipped (missing ID).`);
-      }
-
-      fetchStudents(pagination.current, debouncedSearchQuery);
-    } finally {
-      setIsApprovingAll(false);
-    }
-  };
 
   const handleDeleteClick = (student) => {
     setStudentToDelete(student);
@@ -208,11 +149,6 @@ const StudentManagement = () => {
   };
 
   const handleModalSubmit = async (formData, id) => {
-    if (selectedStudent && !id) {
-      toast.error('Student ID is missing for update. Please reopen edit and try again.');
-      return;
-    }
-
     setIsSubmitting(true);
     try {
       if (id) {
@@ -227,122 +163,148 @@ const StudentManagement = () => {
       fetchStudents(id ? pagination.current : 1, debouncedSearchQuery);
     } catch (error) {
       console.error('Submission error:', error);
-      toast.error(getApiMessage(error, 'Failed to save student. Please check all fields.'));
+      toast.error(getApiMessage(error, 'Failed to save student.'));
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleAddClick = () => {
-    setSelectedStudent(null);
-    setIsModalOpen(true);
-  };
-
   const columns = [
-    { 
-      header: 'Student', 
+    {
+      header: 'Student',
       accessor: 'fullName',
       render: (row) => (
-        <div className="user-cell">
-          <div className="user-avatar">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-[10px] bg-[#0066cc]/10 text-[#0066cc] flex items-center justify-center font-semibold text-[15px] overflow-hidden">
             {(row.profileImageUrl || row.profileImagePath) ? (
-              <img src={row.profileImageUrl || row.profileImagePath} alt={row.fullName} />
+              <img src={row.profileImageUrl || row.profileImagePath} alt={row.fullName} className="w-full h-full object-cover" />
             ) : (
-              <div className="avatar-placeholder">
-                {row.fullName?.charAt(0).toUpperCase()}
-              </div>
+              row.fullName?.charAt(0).toUpperCase()
             )}
           </div>
-          <div className="user-info-text">
-            <div className="user-name-bold">{row.fullName}</div>
-            <div className="user-email-muted">{row.email}</div>
+          <div className="flex flex-col">
+            <span className="text-[15px] font-semibold font-['SF Pro Text'] text-[#1d1d1f]">{row.fullName}</span>
+            <div className="flex items-center gap-1.5">
+              <Mail size={10} className="text-[#1d1d1f]/30" />
+              <span className="text-[11px] font-['SF Pro Text'] text-[#1d1d1f]/40">{row.email}</span>
+            </div>
           </div>
         </div>
       )
     },
-    { header: 'Admission No', accessor: 'admissionNumber' },
-    { 
-      header: 'Status', 
-      accessor: 'isActive', 
-      render: (row) => (
-        <span className={`status-chip ${row.isActive ? 'active' : 'pending'}`}>
-          {isApplicantRecord(row) ? 'Applicant' : row.isActive ? 'Active' : 'Inactive'}
-        </span>
-      ) 
+    {
+      header: 'Admission No',
+      accessor: 'admissionNumber',
+      render: (row) => <span className="font-mono text-[12px] font-medium text-[#1d1d1f]/50">{row.admissionNumber || '—'}</span>
+    },
+    {
+      header: 'Status',
+      accessor: 'isActive',
+      render: (row) => {
+        const isApp = isApplicantRecord(row);
+        return (
+          <span className={`
+            px-3 py-1.5 rounded-full text-[10px] font-semibold uppercase tracking-[0.2em]
+            ${isApp ? 'bg-[#f5f5f7] text-[#1d1d1f]/60' : row.isActive ? 'bg-[#0066cc]/10 text-[#0066cc]' : 'bg-[#f5f5f7] text-[#1d1d1f]/40'}
+          `}>
+            {isApp ? 'Applicant' : row.isActive ? 'Active' : 'Inactive'}
+          </span>
+        );
+      }
     }
   ];
 
   return (
-    <>
-      {error && (
-        <div style={{
-          background: 'rgba(255, 59, 48, 0.1)',
-          border: '1px solid rgba(255, 59, 48, 0.3)',
-          borderRadius: '12px',
-          padding: '16px 20px',
-          marginBottom: '20px',
-          color: '#ff3b30',
-          fontSize: '14px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px'
-        }}>
-          <span style={{ fontSize: '18px' }}>⚠️</span>
-          <div>
-            <strong>Backend Error:</strong> {error}
-            <br />
-            <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '12px' }}>
-              Please check if the backend server is running and configured correctly.
-            </span>
-          </div>
-          <button 
-            onClick={() => fetchStudents(pagination.current, debouncedSearchQuery)} 
-            style={{
-              marginLeft: 'auto',
-              background: 'rgba(255,255,255,0.1)',
-              border: '1px solid rgba(255,255,255,0.2)',
-              borderRadius: '8px',
-              padding: '6px 16px',
-              color: '#fff',
-              cursor: 'pointer',
-              fontSize: '13px'
-            }}
+    <div className="max-w-[1440px] mx-auto px-6 py-8 space-y-8">
+      <AnimatePresence>
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="bg-[#fef2f2] border border-[#fecaca] rounded-[14px] p-5 flex items-center gap-4"
           >
-            Retry
-          </button>
+            <div className="w-10 h-10 rounded-[10px] bg-white flex items-center justify-center text-red-500 shadow-sm">
+              <AlertCircle size={20} />
+            </div>
+            <div className="flex-1">
+              <h4 className="font-semibold text-[#991b1b] text-[13px] mb-0.5">Connection Error</h4>
+              <p className="text-red-500/70 text-[12px] font-['SF Pro Text'] leading-relaxed">{error}</p>
+            </div>
+            <button
+              onClick={() => fetchStudents(pagination.current, debouncedSearchQuery)}
+              className="p-2.5 bg-white hover:bg-[#fef2f2] text-red-500 rounded-[10px] transition-all shadow-sm"
+            >
+              <RefreshCw size={16} />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Hero Banner */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="relative overflow-hidden bg-[#272729] rounded-[18px] shadow-[rgba(0,0,0,0.22)_3px_5px_30px_0px]"
+      >
+        <div className="relative z-10 px-8 py-10 lg:px-10 lg:py-12">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div className="flex items-start gap-5">
+              <div className="w-14 h-14 rounded-[14px] bg-[#0066cc] flex items-center justify-center text-white shadow-[rgba(0,102,204,0.3)_0_4px_12px]">
+                <Users size={26} />
+              </div>
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <Sparkles size={14} className="text-[#0066cc]" />
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#0066cc]">Student Directory</span>
+                </div>
+                <h2 className="text-[28px] font-semibold font-['SF Pro Display'] tracking-[-0.28px] text-white mb-1">
+                  Student Directory
+                </h2>
+                <p className="text-[15px] font-['SF Pro Text'] text-white/50 max-w-md">
+                  Manage institutional records, oversee academic status, and streamline the enrollment lifecycle.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 px-5 py-3 bg-white/5 rounded-full border border-white/10">
+              <div className="text-center">
+                <span className="block text-[32px] font-semibold font-['SF Pro Display'] text-white">{pagination.total}</span>
+                <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/30">Total Scholars</span>
+              </div>
+            </div>
+          </div>
         </div>
-      )}
 
-      <div className="approval-section-banner">
-        <div className="approval-section-meta">
-          <h3>Approval Section</h3>
-          <p>Approve all applicants and move them to student role.</p>
-        </div>
-        <button
-          className="approve-all-btn"
-          onClick={handleApproveAllApplicants}
-          disabled={isApprovingAll}
-        >
-          {isApprovingAll ? 'Approving...' : 'Approve All Applicants'}
-        </button>
-      </div>
+        {/* Decorative elements */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-[#0066cc]/5 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-[#0066cc]/5 rounded-full blur-3xl"></div>
+      </motion.div>
 
-      <ManagementTable 
-        title="Student Management"
-        columns={columns}
-        data={students}
-        isLoading={isLoading}
-        pagination={pagination}
-        onPageChange={(page) => fetchStudents(page, debouncedSearchQuery)}
-        onDelete={handleDeleteClick}
-        onEdit={handleEdit}
-        onAdd={handleAddClick}
-        searchPlaceholder="Search by email or username..."
-        searchValue={searchQuery}
-        onSearchChange={setSearchQuery}
-      />
+      {/* Table Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+      >
+        <ManagementTable
+          title="Scholastic Records"
+          columns={columns}
+          data={students}
+          isLoading={isLoading}
+          pagination={pagination}
+          onPageChange={(page) => fetchStudents(page, debouncedSearchQuery)}
+          onDelete={handleDeleteClick}
+          onEdit={handleEdit}
+          onAdd={() => { setSelectedStudent(null); setIsModalOpen(true); }}
+          searchPlaceholder="Filter records by name, ID or email..."
+          searchValue={searchQuery}
+          onSearchChange={setSearchQuery}
+        />
+      </motion.div>
 
-      <StudentModal 
+      {/* Modals */}
+      <StudentModal
         isOpen={isModalOpen}
         onClose={() => {
           setIsModalOpen(false);
@@ -353,14 +315,14 @@ const StudentManagement = () => {
         initialData={selectedStudent}
       />
 
-      <DeleteConfirmModal 
+      <DeleteConfirmModal
         isOpen={!!studentToDelete}
         onClose={() => setStudentToDelete(null)}
         onConfirm={handleConfirmDelete}
         itemName={studentToDelete?.fullName}
         isLoading={isDeleting}
       />
-    </>
+    </div>
   );
 };
 

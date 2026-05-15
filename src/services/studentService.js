@@ -83,3 +83,15 @@ export const getStudentProfile = async () => {
     throw error.response?.data || error.message;
   }
 };
+
+export const getStudentAttendance = async (studentId = null) => {
+  try {
+    // If studentId is provided, we can pass it as a query parameter just in case the backend expects it.
+    // However, for a /me endpoint, the backend usually relies on the token.
+    const url = studentId ? `/Attendence/me?studentId=${studentId}` : '/Attendence/me';
+    const response = await api.get(url);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+};

@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import LandingPage from './features/auth/LandingPage';
+import AuthPage from './features/auth/AuthPage';
 import GoogleCallback from './features/auth/GoogleCallback';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -27,12 +28,10 @@ function App() {
           }}
         />
         <Routes>
-          {/* Public Auth Route */}
-          <Route path="/auth" element={<LandingPage />} />
+          {/* Public Routes */}
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/auth" element={<AuthPage />} />
           <Route path="/auth/callback" element={<GoogleCallback />} />
-          
-          {/* Smart Root Redirect */}
-          <Route path="/" element={<RoleBasedRedirect />} />
           
           {/* Protected Dashboard Routes */}
           <Route 
@@ -90,5 +89,3 @@ function App() {
 }
 
 export default App;
-
-

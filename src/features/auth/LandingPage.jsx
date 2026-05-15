@@ -1,233 +1,307 @@
 import React, { useState } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
-  ArrowRight,
-  BookOpenCheck,
-  CalendarClock,
-  GraduationCap,
-  Landmark,
-  ShieldCheck,
-  Users,
+  ArrowRight, GraduationCap, BarChart3, Leaf, Shield,
+  ChevronRight, Sparkles, CheckCircle, Apple, Menu, X,
+  Clock, Trophy, Users, BookOpen, Calendar, Award
 } from 'lucide-react';
 import { SignInModal, SignUpModal } from './AuthModals';
 
 const LandingPage = () => {
   const [isSignInOpen, setIsSignInOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
-  const { scrollY } = useScroll();
-  const backgroundY = useTransform(scrollY, [0, 500], [0, 70]);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const openSignIn = () => {
     setIsSignInOpen(true);
     setIsSignUpOpen(false);
+    setMobileMenuOpen(false);
   };
-
   const openSignUp = () => {
     setIsSignUpOpen(true);
     setIsSignInOpen(false);
+    setMobileMenuOpen(false);
   };
-
   const closeModals = () => {
     setIsSignInOpen(false);
     setIsSignUpOpen(false);
   };
 
-  const navLinks = ['Home', 'About', 'Features', 'Modules', 'Dashboard', 'Contact'];
+  const features = [
+    { icon: BarChart3, title: 'Attendance Tracking', description: 'Scholarly and precise monitoring of student engagement and participation.' },
+    { icon: Users, title: 'Student Management', description: 'Comprehensive student lifecycle tools from enrollment to graduation.' },
+    { icon: Shield, title: 'Staff Management', description: 'Empowering faculty and administration with streamlined workflows.' },
 
-  const stats = [
-    { label: 'Institutions', value: '500+', icon: Landmark },
-    { label: 'Students', value: '100K+', icon: Users },
-    { label: 'Uptime', value: '99.9%', icon: BookOpenCheck },
-    { label: 'Secure & Reliable', value: '', icon: ShieldCheck },
-  ];
-
-  const modules = [
-    {
-      title: 'Academic Management',
-      description: 'Manage courses, exams, attendance and grading with precision.',
-      icon: GraduationCap,
-    },
-    {
-      title: 'Student Information',
-      description: 'Centralized student profiles, records, and communication history.',
-      icon: Users,
-    },
-    {
-      title: 'Timetable & Scheduling',
-      description: 'Smart scheduling for classes, rooms, faculty, and events.',
-      icon: CalendarClock,
-    },
   ];
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-[#1E293B]">
-      <section className="relative min-h-screen overflow-hidden">
-        <motion.div
-          style={{ y: backgroundY }}
-          className="absolute inset-0 z-0 scale-[1.07]"
-          aria-hidden="true"
-        >
-          <div
-            className="h-full w-full bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: "url('/graduation-hero.png')" }}
-          />
-        </motion.div>
+    <div className="min-h-screen bg-white text-[#1d1d1f] overflow-x-hidden">
+      {/* Apple-style Global Navigation */}
 
-        <div
-          className="absolute inset-0 z-10 bg-gradient-to-b from-white/75 to-white/55 backdrop-blur-[2px]"
-          aria-hidden="true"
-        />
-
-        <div className="relative z-20 mx-auto flex min-h-screen max-w-[1280px] flex-col px-4 py-5 sm:px-8 md:px-10">
-          <header className="sticky top-4 z-40">
-            <div className="rounded-2xl border border-white/65 bg-white/58 px-4 py-3 shadow-[0_8px_30px_rgba(15,43,91,0.1)] backdrop-blur-xl sm:px-6">
-              <div className="flex items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#0F2B5B] text-[#D4A44B] shadow-[0_6px_20px_rgba(15,43,91,0.35)]">
-                    <GraduationCap size={22} />
-                  </div>
-                  <div className="leading-tight">
-                    <p className="font-display text-lg font-bold uppercase tracking-[0.04em] text-[#0F2B5B]">
-                      Kanding College
-                    </p>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.35em] text-[#D4A44B]">
-                      ERP System
-                    </p>
-                  </div>
-                </div>
-
-                <nav className="hidden items-center gap-8 lg:flex">
-                  {navLinks.map((link) => (
-                    <a
-                      key={link}
-                      href="#"
-                      className="text-sm font-medium text-[#0F2B5B]/85 transition hover:text-[#0F2B5B]"
-                    >
-                      {link}
-                    </a>
-                  ))}
-                </nav>
-
-                <div className="flex items-center gap-2 sm:gap-3">
-                  <button
-                    type="button"
-                    onClick={openSignIn}
-                    className="rounded-xl border border-[#0F2B5B]/30 bg-white/70 px-4 py-2.5 text-sm font-semibold text-[#0F2B5B] shadow-sm transition hover:border-[#0F2B5B]/60 hover:bg-white"
-                  >
-                    Login
-                  </button>
-                  <button
-                    type="button"
-                    onClick={openSignUp}
-                    className="rounded-xl bg-[#0F2B5B] px-4 py-2.5 text-sm font-semibold text-white shadow-[0_8px_24px_rgba(15,43,91,0.28)] transition hover:bg-[#0c2550]"
-                  >
-                    Get Started
-                  </button>
-                </div>
-              </div>
+      {/* Frosted Glass Sub-nav */}
+      <div className="fixed top-11 left-0 right-0 bg-[#f5f5f7]/80 backdrop-blur-xl z-40 h-13 border-b border-white/20">
+        <div className="max-w-[1440px] mx-auto px-8 h-full flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-[#0066cc] rounded-lg flex items-center justify-center">
+              <GraduationCap size={16} className="text-white" />
             </div>
-          </header>
+            <span className="text-[21px] font-semibold tracking-[0.231px] font-['SF Pro Display']">CampusTouch ERP</span>
+          </div>
+          <div className="hidden md:flex items-center gap-4">
+            <button onClick={openSignIn} className="text-[#0066cc] text-[14px] font-['SF Pro Text']">Student Login</button>
+            <button onClick={openSignUp} className="bg-[#0066cc] text-white px-5 py-1.5 rounded-full text-[14px] hover:scale-95 transition-transform">
+              Get Started
+            </button>
+          </div>
+        </div>
+      </div>
 
-          <div className="grid flex-1 items-center gap-10 pb-10 pt-8 lg:grid-cols-2 lg:pt-12">
+      {/* Hero Section */}
+      <section id="features" className="pt-32 pb-20 bg-[#f5f5f7]">
+        <div className="max-w-[1440px] mx-auto px-8">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
-              className="max-w-[640px]"
+              transition={{ duration: 0.6 }}
             >
-              <p className="mb-5 text-xs font-semibold uppercase tracking-[0.35em] text-[#D4A44B] sm:text-sm">
-                SMARTER CAMPUS. STRONGER FUTURE.
-              </p>
-
-              <h1 className="font-display text-5xl font-bold leading-[0.98] text-[#0F2B5B] sm:text-6xl lg:text-[72px]">
-                All-in-One College ERP Solution
+              <div className="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full mb-6 shadow-sm">
+                <Sparkles size={14} className="text-[#0066cc]" />
+                <span className="text-[14px] text-[#1d1d1f] font-['SF Pro Text']">Institutional Excellence</span>
+              </div>
+              <h1 className="text-[56px] md:text-[64px] font-semibold leading-[1.07] tracking-[-0.28px] font-['SF Pro Display'] text-[#1d1d1f] mb-6">
+                Cultivating Knowledge<br />
+                <span className="text-[#0066cc]">for the Future</span>
               </h1>
-
-              <p className="mt-6 max-w-[560px] text-base leading-8 text-[#1E293B]/80 sm:text-lg">
-                Streamline academic, administrative, and communication processes in one integrated
-                platform.
+              <p className="text-[17px] leading-[1.47] tracking-[-0.374px] text-[#1d1d1f]/70 max-w-[540px] mb-10">
+                CampusTouch provides a premier environment for academic rigor, groundbreaking research,
+                and the holistic development of tomorrow's leaders.
               </p>
-
-              <div className="mt-10 flex flex-wrap items-center gap-4">
-                <button
-                  type="button"
-                  onClick={openSignUp}
-                  className="inline-flex h-14 items-center gap-2 rounded-xl bg-[#0F2B5B] px-8 text-base font-semibold text-white shadow-[0_14px_30px_rgba(15,43,91,0.3)] transition hover:-translate-y-0.5 hover:bg-[#0c2550]"
-                >
-                  Get Started
-                  <ArrowRight size={18} />
+              <div className="flex flex-wrap gap-4">
+                <button onClick={openSignUp} className="bg-[#0066cc] text-white px-7 py-3 rounded-full text-[17px] hover:scale-95 transition-transform inline-flex items-center gap-2">
+                  Access Portal <ArrowRight size={18} />
                 </button>
-                <button
-                  type="button"
-                  onClick={openSignIn}
-                  className="inline-flex h-14 items-center rounded-xl border border-[#0F2B5B]/25 bg-white/70 px-8 text-base font-semibold text-[#0F2B5B] shadow-sm backdrop-blur transition hover:border-[#0F2B5B]/50 hover:bg-white"
-                >
-                  Take a Tour
+                <button onClick={openSignIn} className="border border-[#0066cc] text-[#0066cc] px-7 py-3 rounded-full text-[17px] hover:bg-[#0066cc]/5 transition-colors">
+                  Explore Programs
                 </button>
               </div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="mt-10 rounded-3xl border border-white/70 bg-white/70 p-5 shadow-[0_18px_35px_rgba(15,43,91,0.1)] backdrop-blur-xl sm:mt-14 sm:p-6"
-              >
-                <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                  {stats.map((stat) => {
-                    const Icon = stat.icon;
-
-                    return (
-                      <div
-                        key={stat.label}
-                        className="rounded-2xl border border-white/60 bg-white/60 p-3.5 shadow-sm"
-                      >
-                        <div className="mb-2 flex h-9 w-9 items-center justify-center rounded-full bg-[#D4A44B]/15 text-[#0F2B5B]">
-                          <Icon size={18} />
-                        </div>
-                        {stat.value ? (
-                          <p className="text-lg font-bold text-[#0F2B5B]">{stat.value}</p>
-                        ) : null}
-                        <p className="text-xs font-semibold text-[#1E293B]/75">{stat.label}</p>
-                      </div>
-                    );
-                  })}
-                </div>
-              </motion.div>
             </motion.div>
 
-            <div className="relative h-full min-h-[220px] lg:min-h-[560px]">
-              <div className="grid gap-4 sm:grid-cols-3 lg:absolute lg:bottom-10 lg:right-4 lg:flex lg:gap-4">
-                {modules.map((module, index) => {
-                  const Icon = module.icon;
-
-                  return (
-                    <motion.article
-                      key={module.title}
-                      initial={{ opacity: 0, y: 35 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.8, delay: 0.25 + index * 0.12 }}
-                      whileHover={{ y: -8, scale: 1.02 }}
-                      className="w-full rounded-3xl border border-white/75 bg-white/68 p-5 shadow-[0_18px_30px_rgba(15,43,91,0.13)] backdrop-blur-xl lg:w-52"
-                      style={{
-                        animation: `floatingCard ${5 + index * 0.6}s ease-in-out ${index * 0.25}s infinite`,
-                      }}
-                    >
-                      <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#0F2B5B]/10 text-[#0F2B5B]">
-                        <Icon size={18} />
-                      </div>
-                      <h3 className="text-base font-semibold text-[#0F2B5B]">{module.title}</h3>
-                      <p className="mt-2 text-xs leading-5 text-[#1E293B]/78">{module.description}</p>
-                    </motion.article>
-                  );
-                })}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+              className="relative"
+            >
+              <div className="rounded-[18px] overflow-hidden shadow-[rgba(0,0,0,0.22)_3px_5px_30px_0px]">
+                <img
+                  src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800"
+                  alt="Campus life"
+                  className="w-full h-[500px] object-cover"
+                />
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      <SignInModal isOpen={isSignInOpen} onClose={closeModals} onSwitchToSignUp={openSignUp} />
-      <SignUpModal isOpen={isSignUpOpen} onClose={closeModals} onSwitchToSignIn={openSignIn} />
+      {/* About Section - Light Tile */}
+      <section id="about" className="py-20 bg-white">
+        <div className="max-w-[1440px] mx-auto px-8 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <h2 className="text-[40px] font-semibold leading-[1.1] font-['SF Pro Display'] text-[#1d1d1f] mb-6">
+              About CampusTouch
+            </h2>
+            <p className="text-[17px] leading-[1.47] tracking-[-0.374px] text-[#1d1d1f]/70 max-w-[900px] mx-auto">
+              CampusTouch envisions a future where digital academic management seamlessly integrates with scholarly tradition.
+              Our platform empowers institutions to streamline operations while maintaining the highest standards of academic
+              excellence and intellectual rigor.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Features Grid - Parchment Tile */}
+      <section className="py-20 bg-[#f5f5f7]">
+        <div className="max-w-[1440px] mx-auto px-8">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-[40px] font-semibold leading-[1.1] font-['SF Pro Display'] text-[#1d1d1f] mb-4">
+              Core Capabilities
+            </h2>
+            <p className="text-[17px] leading-[1.47] tracking-[-0.374px] text-[#1d1d1f]/70">
+              Tools designed for comprehensive academic stewardship.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {features.map((feature, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ y: -4 }}
+                className="bg-white rounded-[18px] p-8 border border-[#e0e0e0] hover:shadow-lg transition-all"
+              >
+                <div className="w-14 h-14 bg-[#0066cc]/10 rounded-full flex items-center justify-center mb-5">
+                  <feature.icon size={26} className="text-[#0066cc]" />
+                </div>
+                <h3 className="text-[22px] font-semibold font-['SF Pro Display'] text-[#1d1d1f] mb-3">
+                  {feature.title}
+                </h3>
+                <p className="text-[15px] leading-[1.43] text-[#1d1d1f]/70">
+                  {feature.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section - White Tile */}
+      <section className="py-20 bg-white">
+        <div className="max-w-[1440px] mx-auto px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {[
+              { value: '500+', label: 'Institutions' },
+              { value: '1M+', label: 'Active Users' },
+              { value: '50k+', label: 'Daily Transactions' },
+              { value: '99.9%', label: 'Uptime' }
+            ].map((stat, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ delay: index * 0.1 }}
+                className="text-center"
+              >
+                <p className="text-[44px] font-bold text-[#0066cc] font-['SF Pro Display']">{stat.value}</p>
+                <p className="text-[14px] text-[#1d1d1f]/60 mt-2">{stat.label}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section - Dark Tile */}
+      <section className="py-24 bg-[#272729]">
+        <div className="max-w-[1440px] mx-auto px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center"
+          >
+            <h2 className="text-[40px] md:text-[48px] font-semibold leading-[1.1] font-['SF Pro Display'] text-white mb-4">
+              Begin Your Story <br />
+              <span className="text-[#cccccc]">at CampusTouch.</span>
+            </h2>
+            <p className="text-[17px] leading-[1.47] text-white/60 max-w-[540px] mx-auto mb-12">
+              Join thousands of institutions already transforming their academic management.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <button onClick={openSignUp} className="bg-[#0066cc] text-white px-8 py-3 rounded-full text-[17px] hover:scale-95 transition-transform">
+                Register Account
+              </button>
+              <button onClick={openSignIn} className="bg-transparent border border-white/30 text-white px-8 py-3 rounded-full text-[17px] hover:bg-white/10 transition-all">
+                Login
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-[#f5f5f7] pt-20 pb-12 border-t border-[#e0e0e0]">
+        <div className="max-w-[1440px] mx-auto px-8">
+          <div className="grid md:grid-cols-4 gap-12 mb-16">
+            <div className="md:col-span-2">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 bg-[#0066cc] rounded-xl flex items-center justify-center">
+                  <GraduationCap size={20} className="text-white" />
+                </div>
+                <span className="text-[24px] font-semibold font-['SF Pro Display']">CampusTouch</span>
+              </div>
+              <p className="text-[14px] text-[#1d1d1f]/60 leading-relaxed max-w-sm">
+                Photography-first interface and rigorous operations, designed for modern institutions.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-[11px] font-semibold uppercase tracking-[0.2em] mb-6 text-[#1d1d1f]/40">Experience</h3>
+              <ul className="space-y-3">
+                {["Curriculum", "Admissions", "Campus Life", "Research"].map(item => (
+                  <li key={item}>
+                    <a href="#" className="text-[14px] text-[#1d1d1f]/60 hover:text-[#0066cc] transition-colors">
+                      {item}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-[11px] font-semibold uppercase tracking-[0.2em] mb-6 text-[#1d1d1f]/40">Institutional</h3>
+              <ul className="space-y-3">
+                {["About", "Privacy", "Terms", "Support"].map(item => (
+                  <li key={item}>
+                    <a href="#" className="text-[14px] text-[#1d1d1f]/60 hover:text-[#0066cc] transition-colors">
+                      {item}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          <div className="pt-8 border-t border-[#e0e0e0] flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-[11px] text-[#1d1d1f]/40">© 2026 CampusTouch Institutional Hub.</p>
+            <div className="flex gap-6">
+              {['Twitter', 'LinkedIn', 'Journal'].map(item => (
+                <a key={item} href="#" className="text-[12px] text-[#1d1d1f]/40 hover:text-[#0066cc] transition-colors">
+                  {item}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </footer>
+
+      {/* Mobile Menu Modal */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black z-50 md:hidden"
+          >
+            <div className="pt-20 px-8">
+              <button onClick={() => setMobileMenuOpen(false)} className="absolute top-4 right-4 text-white">
+                <X size={24} />
+              </button>
+              <div className="flex flex-col items-center gap-6">
+                {['Features', 'About', 'Get Started'].map((item) => (
+                  <a key={item} href={`#${item.toLowerCase().replace(' ', '-')}`} className="text-white text-[21px] font-['SF Pro Display']" onClick={() => setMobileMenuOpen(false)}>
+                    {item}
+                  </a>
+                ))}
+                <button onClick={openSignIn} className="w-full bg-[#1d1d1f] text-white py-3 rounded-full">Sign In</button>
+                <button onClick={openSignUp} className="w-full bg-[#0066cc] text-white py-3 rounded-full">Register</button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Auth Modals */}
+      {isSignInOpen && (
+        <SignInModal isOpen={isSignInOpen} onClose={closeModals} onSwitchToSignUp={openSignUp} />
+      )}
+      {isSignUpOpen && (
+        <SignUpModal isOpen={isSignUpOpen} onClose={closeModals} onSwitchToSignIn={openSignIn} />
+      )}
     </div>
   );
 };

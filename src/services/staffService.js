@@ -1,8 +1,18 @@
 import api from './api';
 
-export const getAllStaff = async () => {
+export const getAllStaff = async (pageNumber = 1, pageSize = 10, search = '') => {
   try {
-    const response = await api.get('/Staff/Getallstaff');
+    const query = new URLSearchParams({
+      pageNumber: String(pageNumber),
+      pageSize: String(pageSize),
+    });
+
+    const trimmedSearch = search?.trim();
+    if (trimmedSearch) {
+      query.set('Search', trimmedSearch);
+    }
+
+    const response = await api.get(`/Staff/Getallstaff?${query.toString()}`);
     return response.data;
   } catch (error) {
     throw error.response?.data || error.message;
@@ -45,10 +55,14 @@ export const deleteStaff = async (id) => {
   }
 };
 
-export const assignSubjects = async (staffId, subjectIds) => {
+export const assignSubjects = async (staffId, subjectId) => {
   try {
-    // Note: The body format provided is { staffId: 1, subjectIds: [2] }
-    const response = await api.post(`/staff/${staffId}/subjects`, { staffId, subjectIds });
+    // Backend expects an AssignSubjectCommand object
+    const payload = {
+      staffId: Number(staffId),
+      subjectIds: [Number(subjectId)]
+    };
+    const response = await api.post(`/staff/${staffId}/subjects`, payload);
     return response.data;
   } catch (error) {
     throw error.response?.data || error.message;

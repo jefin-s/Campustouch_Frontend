@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login - Alexandria ERP</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Noto+Serif:ital,wght@0,400;0,700;1,400&amp;family=Public+Sans:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-fixed-variant": "#00419d",
+                    "surface-dim": "#dbdadb",
+                    "on-error-container": "#93000a",
+                    "primary": "#094cb2",
+                    "surface": "#faf9fa",
+                    "on-error": "#ffffff",
+                    "secondary-container": "#dfe3e8",
+                    "on-surface": "#1b1c1d",
+                    "on-tertiary-fixed": "#211b00",
+                    "inverse-primary": "#b1c5ff",
+                    "secondary": "#5a5f63",
+                    "background": "#faf9fa",
+                    "surface-container-low": "#f5f3f4",
+                    "on-background": "#1b1c1d",
+                    "on-tertiary-container": "#4a3f00",
+                    "on-primary-fixed": "#001946",
+                    "tertiary-fixed": "#f9e37a",
+                    "outline": "#737784",
+                    "surface-container-highest": "#e3e2e3",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed-dim": "#dcc661",
+                    "primary-fixed-dim": "#b1c5ff",
+                    "on-secondary-container": "#606569",
+                    "on-secondary": "#ffffff",
+                    "tertiary": "#6d5e00",
+                    "surface-container-high": "#e9e8e9",
+                    "primary-fixed": "#d9e2ff",
+                    "on-secondary-fixed": "#171c20",
+                    "on-tertiary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "surface-variant": "#e3e2e3",
+                    "inverse-surface": "#303031",
+                    "surface-tint": "#2259bf",
+                    "tertiary-container": "#bfab49",
+                    "surface-container": "#efedee",
+                    "primary-container": "#3366cc",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-bright": "#faf9fa",
+                    "error": "#ba1a1a",
+                    "on-surface-variant": "#434653",
+                    "on-primary-container": "#e7ebff",
+                    "secondary-fixed-dim": "#c2c7cc",
+                    "on-tertiary-fixed-variant": "#524600",
+                    "secondary-fixed": "#dfe3e8",
+                    "outline-variant": "#c3c6d5",
+                    "on-secondary-fixed-variant": "#42474b",
+                    "inverse-on-surface": "#f2f0f1"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {},
+            "fontFamily": {
+                    "headline": [
+                            "Noto Serif"
+                    ],
+                    "display": [
+                            "Noto Serif"
+                    ],
+                    "body": [
+                            "Inter"
+                    ],
+                    "label": [
+                            "Public Sans"
+                    ]
+            },
+            "fontSize": {}
+    },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body min-h-screen flex antialiased">
+<!-- Split Screen Layout -->
+<div class="flex w-full h-screen">
+<!-- Left Side: Editorial Content / Image -->
+<div class="hidden lg:flex lg:w-1/2 bg-surface-container-low relative overflow-hidden flex-col justify-between p-12">
+<!-- Decorative Background Element -->
+<div class="absolute inset-0 z-0">
+<img alt="University Library" class="w-full h-full object-cover opacity-80 mix-blend-multiply" data-alt="A grand, historic university library interior filled with rows of classic books and wooden reading tables. Soft, natural light streams through tall, arched windows, illuminating the dust motes in the air. The scene is shot with a warm, sophisticated color palette, emphasizing the deep browns of the wood and the muted golds of the book bindings. The atmosphere is quiet, scholarly, and premium, perfectly matching a high-end academic editorial style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCENk3DPjSB6l4u-pHacK9CZKGofPyqaqcJxsQFAXqXeDGSgefE0Epj0lkNp4bswyWM9Cf8rdZ91DzznNQHBHx7S-CD6ryb1Mc1uk5dd5QQbqPeeb1lvHoxJ8ZHA4e0MlePsWpQIy7LQtDWUv_iZwso0IfMw8vhHzCeR0_5axfmucK0HnX6M4Z07fBh89Y7Z49hMJNsT8WEKTp6dk7_szRtB7ctLoCWvKoXQ152do96QR6YYKxxDZxclUSeBT33kbFv7h4MPm5AeCF6"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-low/90 to-surface-container-low/20 backdrop-blur-[2px]"></div>
+</div>
+<!-- Branding -->
+<div class="relative z-10">
+<div class="font-display italic text-3xl font-bold text-on-surface tracking-tight mb-2">Alexandria</div>
+<div class="font-label text-sm uppercase tracking-widest text-on-surface-variant">University Press</div>
+</div>
+<!-- Curated Content Snippet -->
+<div class="relative z-10 max-w-md">
+<p class="font-headline text-3xl text-on-surface leading-tight mb-6">
+                    "The pursuit of knowledge is the preservation of the future."
+                </p>
+<div class="flex items-center gap-4">
+<div class="w-12 h-px bg-on-surface-variant/30"></div>
+<span class="font-label text-sm text-tertiary font-medium">Vol. CCXIV</span>
+</div>
+</div>
+</div>
+<!-- Right Side: Login Form -->
+<div class="w-full lg:w-1/2 flex items-center justify-center bg-surface p-8 sm:p-12 lg:p-24">
+<div class="w-full max-w-md space-y-12">
+<!-- Header -->
+<div class="space-y-4 text-center lg:text-left">
+<!-- Mobile Branding -->
+<div class="lg:hidden mb-8 font-display italic text-3xl font-bold text-on-surface tracking-tight">Alexandria</div>
+<h1 class="font-headline text-4xl text-on-surface font-bold tracking-tight">Access Portal</h1>
+<p class="font-body text-base text-on-surface-variant">Enter your academic credentials to proceed.</p>
+</div>
+<!-- Form Container -->
+<form class="space-y-6" onsubmit="event.preventDefault();">
+<!-- Email Field -->
+<div class="space-y-2">
+<label class="block font-label text-sm font-semibold text-on-surface uppercase tracking-wider" for="email">Email Address</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline" data-icon="mail">mail</span>
+<input class="w-full pl-12 pr-4 py-3 bg-surface-container-lowest outline-none transition-all ring-1 ring-outline-variant/30 focus:ring-2 focus:ring-primary text-on-surface font-body rounded-DEFAULT" id="email" name="email" placeholder="scholar@alexandria.edu" required="" type="email"/>
+</div>
+</div>
+<!-- Password Field -->
+<div class="space-y-2">
+<div class="flex justify-between items-baseline">
+<label class="block font-label text-sm font-semibold text-on-surface uppercase tracking-wider" for="password">Password</label>
+<a class="font-body text-sm text-primary hover:underline underline-offset-4 decoration-primary/50 transition-all" href="#">Forgot Password?</a>
+</div>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline" data-icon="lock">lock</span>
+<input class="w-full pl-12 pr-4 py-3 bg-surface-container-lowest outline-none transition-all ring-1 ring-outline-variant/30 focus:ring-2 focus:ring-primary text-on-surface font-body rounded-DEFAULT" id="password" name="password" placeholder="••••••••" required="" type="password"/>
+</div>
+</div>
+<!-- Primary Action -->
+<div class="pt-4">
+<button class="w-full flex items-center justify-center gap-2 py-3 px-6 bg-gradient-to-r from-primary to-primary-container text-on-primary font-label text-sm uppercase tracking-widest font-semibold rounded-DEFAULT hover:opacity-90 active:opacity-80 transition-all" type="submit">
+                            Sign In
+                            <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<!-- Divider -->
+<div class="relative py-4">
+<div class="absolute inset-0 flex items-center">
+<div class="w-full border-t border-outline-variant/30"></div>
+</div>
+<div class="relative flex justify-center">
+<span class="bg-surface px-4 font-label text-xs uppercase tracking-widest text-on-surface-variant">Or</span>
+</div>
+</div>
+<!-- Secondary Action -->
+<div>
+<button class="w-full flex items-center justify-center gap-3 py-3 px-6 bg-surface-container-high text-on-surface font-label text-sm font-semibold rounded-DEFAULT hover:bg-surface-container-highest transition-all ring-1 ring-outline-variant/15" type="button">
+<svg class="w-5 h-5" fill="none" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"></path>
+<path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path>
+</svg>
+                            Sign in with Google
+                        </button>
+</div>
+</form>
+<!-- Footer Links -->
+<div class="text-center pt-8">
+<p class="font-body text-sm text-on-surface-variant">
+                        Don't have credentials? 
+                        <a class="font-label font-medium text-primary hover:underline underline-offset-4 decoration-primary/50 ml-1" href="#">Register for an Account</a>
+</p>
+</div>
+</div>
+</div>
+</div>
+</body></html>

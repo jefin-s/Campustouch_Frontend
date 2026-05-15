@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Faculty Dashboard - Alexandria ERP</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#00419d",
+                        "surface-dim": "#dbdadb",
+                        "on-error-container": "#93000a",
+                        "primary": "#094cb2",
+                        "surface": "#faf9fa",
+                        "on-error": "#ffffff",
+                        "secondary-container": "#dfe3e8",
+                        "on-surface": "#1b1c1d",
+                        "on-tertiary-fixed": "#211b00",
+                        "inverse-primary": "#b1c5ff",
+                        "secondary": "#5a5f63",
+                        "background": "#faf9fa",
+                        "surface-container-low": "#f5f3f4",
+                        "on-background": "#1b1c1d",
+                        "on-tertiary-container": "#4a3f00",
+                        "on-primary-fixed": "#001946",
+                        "tertiary-fixed": "#f9e37a",
+                        "outline": "#737784",
+                        "surface-container-highest": "#e3e2e3",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#dcc661",
+                        "primary-fixed-dim": "#b1c5ff",
+                        "on-secondary-container": "#606569",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#6d5e00",
+                        "surface-container-high": "#e9e8e9",
+                        "primary-fixed": "#d9e2ff",
+                        "on-secondary-fixed": "#171c20",
+                        "on-tertiary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "surface-variant": "#e3e2e3",
+                        "inverse-surface": "#303031",
+                        "surface-tint": "#2259bf",
+                        "tertiary-container": "#bfab49",
+                        "surface-container": "#efedee",
+                        "primary-container": "#3366cc",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-bright": "#faf9fa",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#434653",
+                        "on-primary-container": "#e7ebff",
+                        "secondary-fixed-dim": "#c2c7cc",
+                        "on-tertiary-fixed-variant": "#524600",
+                        "secondary-fixed": "#dfe3e8",
+                        "outline-variant": "#c3c6d5",
+                        "on-secondary-fixed-variant": "#42474b",
+                        "inverse-on-surface": "#f2f0f1"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {},
+                    "fontFamily": {
+                        "headline": ["Noto Serif", "serif"],
+                        "display": ["Noto Serif", "serif"],
+                        "body": ["Inter", "sans-serif"],
+                        "label": ["Public Sans", "sans-serif"]
+                    },
+                    "fontSize": {}
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .material-symbols-outlined.fill { font-variation-settings: 'FILL' 1; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex antialiased">
+<!-- SideNavBar (Shared Component) -->
+<nav class="h-full w-64 fixed left-0 top-0 z-40 bg-surface-container-low dark:bg-surface-dim flex flex-col h-screen p-4 border-r-0">
+<!-- Header -->
+<div class="mb-8 mt-4 px-4">
+<div class="flex items-center gap-3 mb-2">
+<img alt="Institution Seal" class="w-10 h-10 rounded-full object-cover shadow-sm bg-surface-container-lowest" data-alt="A distinguished academic crest or seal, elegantly rendered with gold and navy blue accents on a pristine white background. High-quality editorial style, macro photography, sharp focus on the metallic gold details. The lighting is soft and professional, evoking a sense of heritage and scholarly excellence." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOgqt-ctc2yy2bP9zm749F70cf3kU8DyJzzTE2Ic12RZXd40ozkEzxUnL7Hr9Kf36U7l0RPu1cAr7EgoVGauDflk4J4nSaGfmg5YRcdHcyuLP6MK8JBkU6xrLIC89kiG0Cjk2sD2hXGYmUy3dLY-PLCnmSug9yZImlsGX-QQSmnTdyGA6si7fqzQR-QqOP-lypvCRaOZcswirYRWsZKL4qIXNBvFSMhT9jdZaAVG1_Q97eZrk7VaPEVddX8nUzOnXoHjwSOp3SLddn"/>
+<div>
+<h1 class="font-display text-xl font-bold text-on-surface dark:text-on-background">Alexandria ERP</h1>
+<p class="font-label uppercase tracking-widest text-xs text-on-surface-variant">Academic Management</p>
+</div>
+</div>
+<button class="w-full mt-6 bg-primary hover:bg-on-primary-fixed-variant text-on-primary font-label text-sm py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-sm shadow-on-surface/5">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                New Entry
+            </button>
+</div>
+<!-- Navigation Links -->
+<ul class="flex-1 space-y-2 overflow-y-auto no-scrollbar px-2">
+<li>
+<a class="flex items-center gap-3 bg-primary-container text-on-primary-container rounded-lg px-4 py-3 font-medium hover:translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label tracking-wide">Dashboard</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg px-4 py-3 transition-all hover:bg-surface-container-highest dark:hover:bg-surface-variant hover:translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="font-label tracking-wide">Curriculum</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg px-4 py-3 transition-all hover:bg-surface-container-highest dark:hover:bg-surface-variant hover:translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label tracking-wide">Registrar</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg px-4 py-3 transition-all hover:bg-surface-container-highest dark:hover:bg-surface-variant hover:translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">school</span>
+<span class="font-label tracking-wide">Faculty</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg px-4 py-3 transition-all hover:bg-surface-container-highest dark:hover:bg-surface-variant hover:translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label tracking-wide">Analytics</span>
+</a>
+</li>
+</ul>
+<!-- Footer Links -->
+<ul class="mt-auto space-y-2 px-2 pb-4">
+<li>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg px-4 py-3 transition-all hover:bg-surface-container-highest dark:hover:bg-surface-variant hover:translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label tracking-wide">Support</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg px-4 py-3 transition-all hover:bg-surface-container-highest dark:hover:bg-surface-variant hover:translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label tracking-wide">Sign Out</span>
+</a>
+</li>
+</ul>
+</nav>
+<!-- Main Content Canvas -->
+<main class="ml-64 flex-1 flex flex-col min-h-screen">
+<!-- Top App Bar Area (Simplified for internal dashboard focus) -->
+<header class="h-20 px-12 flex justify-between items-center bg-surface-container-lowest/80 backdrop-blur-md sticky top-0 z-30 shadow-sm shadow-on-surface/5">
+<div class="flex items-center gap-4">
+<h2 class="font-headline text-2xl font-bold tracking-tight text-on-surface">Faculty Dashboard</h2>
+<span class="px-3 py-1 bg-surface-container-high text-on-surface-variant font-label text-xs rounded-full">Spring Term 2024</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors text-2xl">notifications</span>
+<span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-error rounded-full border-2 border-surface-container-lowest"></span>
+</div>
+<div class="flex items-center gap-3 pl-6 border-l border-surface-variant">
+<div class="text-right hidden md:block">
+<p class="font-body text-sm font-medium text-on-surface">Dr. Eleanor Vance</p>
+<p class="font-label text-xs text-on-surface-variant">Dept. of Antiquities</p>
+</div>
+<img alt="User Profile" class="w-10 h-10 rounded-full object-cover ring-2 ring-primary-container" data-alt="A professional headshot of a female academic, dressed in a sophisticated blazer, standing against a blurred library background. The lighting is bright, natural, and flattering, emphasizing a trustworthy and scholarly demeanor. Editorial portrait style with high-end corporate polish." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZnlnV-KX6IegQ7rq0X_vR3hq-3dO4L9CO8FULAwXtsHX5UsfVmY9jlzE-6C9T8PGXdMwBLrRyz0eMNdXK9VjnpJD0zLf8uSxNcDL-MudKG0w-MPKnhiOXhZDjQ4Go97GkQIpt2EVPhC4aludyD-zYQLnAM2qke-Rg8Gz1F_ThPbEZdlgGncWyTYgiz68mfVBe4WqnrW32ZYE7H9c3CRgtUqzBIKzYXmRmGCgkAyuJ5Ou9FCkP-tQHzlifqUP5FvA-VdAjxM6td3nj"/>
+</div>
+</div>
+</header>
+<!-- Bento Grid Layout -->
+<div class="p-8 lg:p-12 max-w-screen-2xl mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-8 auto-rows-[minmax(180px,auto)]"><section class="md:col-span-12 bg-surface-container-lowest rounded-xl p-8 lg:p-10 border border-surface-variant/50 shadow-sm">
+<header class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+<div>
+<h3 class="font-headline text-2xl font-bold text-on-surface mb-2">Attendance Marking</h3>
+<p class="font-body text-sm text-on-surface-variant">Select a session to record attendance for today's classes.</p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<div class="relative">
+<select class="appearance-none bg-surface-container-low border-none rounded-lg px-4 py-2.5 pr-10 font-label text-sm text-on-surface focus:ring-2 focus:ring-primary/20 w-full sm:w-64">
+<option>ANT-301: Hellenistic Period</option>
+<option>ANT-505: Graduate Seminar</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-label text-sm font-medium hover:bg-on-primary-fixed-variant transition-colors shadow-sm">Submit Attendance</button>
+</div>
+</header>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="border-b border-surface-variant">
+<th class="pb-4 font-label text-xs uppercase tracking-widest text-on-surface-variant px-4">Student</th>
+<th class="pb-4 font-label text-xs uppercase tracking-widest text-on-surface-variant px-4 text-center">Present</th>
+<th class="pb-4 font-label text-xs uppercase tracking-widest text-on-surface-variant px-4 text-center">Absent</th>
+<th class="pb-4 font-label text-xs uppercase tracking-widest text-on-surface-variant px-4 text-center">Late</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-high">
+<!-- Student Row 1 -->
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="py-4 px-4">
+<div class="flex items-center gap-4">
+<img alt="Arthur Jensen" class="w-10 h-10 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZnlnV-KX6IegQ7rq0X_vR3hq-3dO4L9CO8FULAwXtsHX5UsfVmY9jlzE-6C9T8PGXdMwBLrRyz0eMNdXK9VjnpJD0zLf8uSxNcDL-MudKG0w-MPKnhiOXhZDjQ4Go97GkQIpt2EVPhC4aludyD-zYQLnAM2qke-Rg8Gz1F_ThPbEZdlgGncWyTYgiz68mfVBe4WqnrW32ZYE7H9c3CRgtUqzBIKzYXmRmGCgkAyuJ5Ou9FCkP-tQHzlifqUP5FvA-VdAjxM6td3nj"/>
+<div>
+<p class="font-body font-medium text-on-surface">Arthur Jensen</p>
+<p class="font-label text-xs text-on-surface-variant">ID: 2024-0812</p>
+</div>
+</div>
+</td>
+<td class="py-4 px-4 text-center">
+<input checked="" class="w-5 h-5 text-primary border-outline-variant focus:ring-primary/20" name="attendance-1" type="radio"/>
+</td>
+<td class="py-4 px-4 text-center">
+<input class="w-5 h-5 text-error border-outline-variant focus:ring-error/20" name="attendance-1" type="radio"/>
+</td>
+<td class="py-4 px-4 text-center">
+<input class="w-5 h-5 text-tertiary border-outline-variant focus:ring-tertiary/20" name="attendance-1" type="radio"/>
+</td>
+</tr>
+<!-- Student Row 2 -->
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="py-4 px-4">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center font-label font-bold text-on-secondary-container">ML</div>
+<div>
+<p class="font-body font-medium text-on-surface">Maria Lopez</p>
+<p class="font-label text-xs text-on-surface-variant">ID: 2024-0845</p>
+</div>
+</div>
+</td>
+<td class="py-4 px-4 text-center">
+<input class="w-5 h-5 text-primary border-outline-variant focus:ring-primary/20" name="attendance-2" type="radio"/>
+</td>
+<td class="py-4 px-4 text-center">
+<input checked="" class="w-5 h-5 text-error border-outline-variant focus:ring-error/20" name="attendance-2" type="radio"/>
+</td>
+<td class="py-4 px-4 text-center">
+<input class="w-5 h-5 text-tertiary border-outline-variant focus:ring-tertiary/20" name="attendance-2" type="radio"/>
+</td>
+</tr>
+<!-- Student Row 3 -->
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="py-4 px-4">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-tertiary-container/30 flex items-center justify-center font-label font-bold text-on-tertiary-container">CW</div>
+<div>
+<p class="font-body font-medium text-on-surface">Charles Wallace</p>
+<p class="font-label text-xs text-on-surface-variant">ID: 2024-0792</p>
+</div>
+</div>
+</td>
+<td class="py-4 px-4 text-center">
+<input class="w-5 h-5 text-primary border-outline-variant focus:ring-primary/20" name="attendance-3" type="radio"/>
+</td>
+<td class="py-4 px-4 text-center">
+<input class="w-5 h-5 text-error border-outline-variant focus:ring-error/20" name="attendance-3" type="radio"/>
+</td>
+<td class="py-4 px-4 text-center">
+<input checked="" class="w-5 h-5 text-tertiary border-outline-variant focus:ring-tertiary/20" name="attendance-3" type="radio"/>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section></div>
+</main>
+</body></html>

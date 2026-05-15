@@ -1,64 +1,39 @@
 import { useState } from 'react';
 import { 
-  User, BookOpen, 
-  Calendar, ClipboardList, LogOut
+  User, CheckSquare
 } from 'lucide-react';
 import DashboardLayout from '../dashboard/DashboardLayout';
+import Sidebar from '../dashboard/Sidebar';
 import StudentProfile from './StudentProfile';
-import { useAuth } from '../../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import StudentAttendance from './StudentAttendance';
 
 const StudentDashboard = () => {
   const [activeTab, setActiveTab] = useState('profile');
-  const { logoutUser } = useAuth();
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logoutUser();
-    navigate('/auth');
-  };
 
   const menuItems = [
     { id: 'profile', label: 'My Profile', icon: <User size={20} /> },
-    { id: 'academics', label: 'Academics', icon: <BookOpen size={20} /> },
-    { id: 'schedule', label: 'Schedule', icon: <Calendar size={20} /> },
-    { id: 'exams', label: 'Exams', icon: <ClipboardList size={20} /> },
+    { id: 'attendance', label: 'Attendance', icon: <CheckSquare size={20} /> },
   ];
 
   const studentSidebar = (
-    <aside className="sidebar">
-      <div className="sidebar-header">
-        <div className="logo-icon">CT</div>
-        <span>CampusTouch</span>
-      </div>
-      <nav className="sidebar-nav">
-        {menuItems.map((item) => (
-          <div 
-            key={item.id} 
-            className={`nav-item ${activeTab === item.id ? 'active' : ''}`}
-            onClick={() => setActiveTab(item.id)}
-          >
-            {item.icon}
-            <span>{item.label}</span>
-          </div>
-        ))}
-      </nav>
-      <button className="logout-btn" onClick={handleLogout}>
-        <LogOut size={20} />
-        <span>Logout</span>
-      </button>
-    </aside>
+    <Sidebar 
+      menuItems={menuItems} 
+      activeTab={activeTab} 
+      onTabChange={setActiveTab} 
+    />
   );
 
   const renderContent = () => {
     switch (activeTab) {
       case 'profile':
         return <StudentProfile />;
+      case 'attendance':
+        return <StudentAttendance />;
       default:
         return (
-          <div className="empty-state">
-            <h2>{menuItems.find(m => m.id === activeTab)?.label} Module</h2>
-            <p>This section is currently under development to bring you the best experience.</p>
+          <div className="p-20 text-center bg-white rounded-[40px] border border-dashed border-slate-200">
+            <h2 className="text-2xl font-black text-slate-400 uppercase tracking-widest">{menuItems.find(m => m.id === activeTab)?.label} Module</h2>
+            <p className="text-slate-400 mt-4 font-bold tracking-tight italic">Coming soon to your student portal.</p>
           </div>
         );
     }
@@ -67,7 +42,7 @@ const StudentDashboard = () => {
   return (
     <DashboardLayout 
       title={menuItems.find(m => m.id === activeTab)?.label} 
-      roleColor="#4f46e5"
+      roleColor="#4F46E5"
       sidebar={studentSidebar}
     >
       {renderContent()}

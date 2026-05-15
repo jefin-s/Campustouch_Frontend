@@ -3,8 +3,8 @@ import api, { setAccessToken } from './api';
 export const login = async (email, password) => {
   try {
     const response = await api.post('/Auth/login', { 
-      Email: email, 
-      Password: password 
+      email: email, 
+      password: password 
     });
     // Correctly extract from the nested 'data' property based on your backend response
     const { token } = response.data.data;
@@ -21,11 +21,11 @@ export const login = async (email, password) => {
 export const register = async (userData) => {
   try {
     const response = await api.post('/Auth/register', {
-      FullName: userData.fullName,
-      Email: userData.email,
-      Username: userData.username,
-      Password: userData.password,
-      PhoneNumber: userData.phoneNumber
+      fullName: userData.fullName,
+      email: userData.email,
+      username: userData.username,
+      password: userData.password,
+      phoneNumber: userData.phoneNumber
     });
     return response.data;
   } catch (error) {

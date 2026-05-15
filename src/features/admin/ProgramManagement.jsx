@@ -77,7 +77,11 @@ const ProgramManagement = () => {
           { header: 'Name', accessor: 'name' },
           { header: 'Level', accessor: 'level' },
           { header: 'Duration (Years)', accessor: 'duration' },
-          { header: 'Dept ID', accessor: 'departmentId' }
+          { 
+            header: 'Department', 
+            accessor: 'departmentId',
+            render: (row) => departments.find(d => d.id === row.departmentId)?.name || row.departmentId || 'N/A'
+          }
         ]}
         data={data}
         isLoading={isLoading}
