@@ -4,7 +4,7 @@ import { X, Loader2, ArrowRight } from 'lucide-react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-const GenericModal = ({ isOpen, onClose, onSubmit, isLoading, initialData, title, fields }) => {
+const GenericModal = ({ isOpen, onClose, onSubmit, isLoading, initialData, title, fields, alwaysFullPayload = false }) => {
   const isEditMode = Boolean(initialData);
   const initialValues = useMemo(() => {
     if (initialData) {
@@ -36,7 +36,7 @@ const GenericModal = ({ isOpen, onClose, onSubmit, isLoading, initialData, title
         schema = Yup.string().trim();
       }
 
-      if (field.required && !isEditMode) {
+      if (field.required) {
         schema = schema.required(`${field.label} is required`);
       }
 
@@ -44,14 +44,14 @@ const GenericModal = ({ isOpen, onClose, onSubmit, isLoading, initialData, title
     });
 
     return Yup.object(schemaMap);
-  }, [fields, isEditMode]);
+  }, [fields]);
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues,
     validationSchema,
     onSubmit: (values) => {
-      if (isEditMode) {
+      if (isEditMode && !alwaysFullPayload) {
         const payload = {};
 
         fields.forEach((field) => {

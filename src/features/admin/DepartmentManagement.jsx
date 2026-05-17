@@ -21,7 +21,8 @@ const DepartmentManagement = () => {
     setIsLoading(true);
     try {
       const response = await departmentService.getAll();
-      setData(response.data.data || response.data || []);
+      const resolvedData = response.data?.items || response.data?.data || response.data || [];
+      setData(Array.isArray(resolvedData) ? resolvedData : []);
     } catch (error) {
       console.error('Fetch error:', error);
     } finally {
@@ -113,9 +114,9 @@ const DepartmentManagement = () => {
       <ManagementTable
         title="Institutional Divisions"
         columns={[
-          { header: 'Code', accessor: 'code', render: (row) => <span className="font-mono text-[12px] font-semibold text-[#0066cc] bg-[#0066cc]/10 px-2.5 py-1 rounded-full">{row.code}</span> },
-          { header: 'Name', accessor: 'name', render: (row) => <span className="text-[15px] font-semibold text-[#1d1d1f]">{row.name}</span> },
-          { header: 'Description', accessor: 'description', render: (row) => <span className="text-[13px] text-[#1d1d1f]/40 max-w-xs block truncate">{row.description || 'No description'}</span> }
+          { header: 'Code', accessor: 'code', render: (row) => <span className="font-mono text-[12px] font-semibold text-[#0066cc] bg-[#0066cc]/10 px-2.5 py-1 rounded-full">{row.code || row.Code || '—'}</span> },
+          { header: 'Name', accessor: 'name', render: (row) => <span className="text-[15px] font-semibold text-[#1d1d1f]">{row.name || row.Name || 'Unnamed'}</span> },
+          { header: 'Description', accessor: 'description', render: (row) => <span className="text-[13px] text-[#1d1d1f]/40 max-w-xs block truncate">{row.description || row.Description || 'No description'}</span> }
         ]}
         data={data}
         isLoading={isLoading}

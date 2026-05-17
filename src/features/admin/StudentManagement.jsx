@@ -75,7 +75,7 @@ const StudentManagement = () => {
     setError(null);
     try {
       const res = await getStudents(page, pagination.pageSize, search);
-      
+
       // Robustly handle backend response structures
       // The user provided format: res.data.items
       const rowData = res.data?.items || res.data?.data || res.data || (Array.isArray(res) ? res : []);

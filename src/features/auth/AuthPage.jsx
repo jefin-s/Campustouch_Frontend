@@ -103,7 +103,7 @@ const LoginView = ({ onToggle }) => {
         const userRole = user?.role?.toLowerCase() || '';
         if (userRole === 'admin') navigate('/admin-dashboard');
         else if (userRole === 'student') navigate('/student-dashboard');
-        else if (userRole === 'staff') navigate('/staff-dashboard');
+        else if (userRole === 'staff' || userRole === 'faculty') navigate('/staff-dashboard');
         else if (userRole === 'applicant') navigate('/applicant-dashboard');
         else navigate('/');
         

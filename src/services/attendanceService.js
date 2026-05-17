@@ -17,3 +17,13 @@ export const getAttendanceReport = async (filters) => {
     throw error.response?.data || error.message;
   }
 };
+
+export const updateAttendance = async (updateData) => {
+  try {
+    // updateData matches: { attendanceId, students: [{ studentId, status, remark }] }
+    const response = await api.put('/Attendence/update-attendance', updateData);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+};

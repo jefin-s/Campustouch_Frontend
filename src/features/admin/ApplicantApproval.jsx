@@ -51,17 +51,17 @@ const ApplicantApproval = () => {
   const handlePromoteSubmit = async (formData) => {
     if (!selectedApplicant) return;
 
-    const userId = selectedApplicant.userId || selectedApplicant.id;
+    const userId = String(selectedApplicant.userId || selectedApplicant.id);
     setIsPromoting(userId);
 
     try {
       const payload = {
-        UserId: userId,
+        userId: userId,
         courseId: Number(formData.courseId),
         departmentId: Number(formData.departmentId),
-        firstName: selectedApplicant.fullName?.split(' ')[0] || selectedApplicant.fullName || '',
-        phoneNumber: selectedApplicant.phoneNumber || '',
-        email: selectedApplicant.email || ''
+        firstName: formData.firstName || '',
+        phoneNumber: formData.phoneNumber || '',
+        email: formData.email || ''
       };
 
       const response = await approveStudent(payload);
@@ -196,12 +196,34 @@ const ApplicantApproval = () => {
         }}
         onSubmit={handlePromoteSubmit}
         isLoading={isPromoting !== null}
+        alwaysFullPayload={true}
         title="Institutional Assignment"
         initialData={{
           courseId: '',
-          departmentId: ''
+          departmentId: '',
+          firstName: selectedApplicant?.firstName || selectedApplicant?.fullName || selectedApplicant?.FirstName || '',
+          phoneNumber: selectedApplicant?.phoneNumber || selectedApplicant?.phone || selectedApplicant?.PhoneNumber || '',
+          email: selectedApplicant?.email || selectedApplicant?.Email || selectedApplicant?.emailAddress || ''
         }}
         fields={[
+          {
+            name: 'firstName',
+            label: 'First Name / Full Name',
+            type: 'text',
+            required: true,
+          },
+          {
+            name: 'email',
+            label: 'Email',
+            type: 'email',
+            required: true,
+          },
+          {
+            name: 'phoneNumber',
+            label: 'Phone Number',
+            type: 'text',
+            required: true,
+          },
           {
             name: 'departmentId',
             label: 'Department',

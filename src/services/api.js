@@ -36,15 +36,17 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
+    const authEndpoints = ['/Auth/login', '/Auth/register', '/Auth/refresh', '/ExternalAuth/google-login'];
+    const isAuthRequest = authEndpoints.some(endpoint => originalRequest.url?.includes(endpoint));
 
-    // If 401 error and not already retrying
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    // If 401 error, not an auth request, and not already retrying
+    if (error.response?.status === 401 && !isAuthRequest && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
         // Call refresh endpoint
         const response = await axios.post(`${BASE_URL}/Auth/refresh`, {}, { withCredentials: true });
-        const { token } = response.data;
+        const { token } = response.data.data || response.data;
 
         setAccessToken(token);
         originalRequest.headers.Authorization = `Bearer ${token}`;
@@ -53,7 +55,10 @@ api.interceptors.response.use(
       } catch (refreshError) {
         // Refresh failed, clear token and redirect to login if needed
         setAccessToken(null);
-        window.location.href = '/auth';
+        // Only redirect if we're not already on the auth page
+        if (!window.location.pathname.includes('/auth')) {
+          window.location.href = '/auth';
+        }
         return Promise.reject(refreshError);
       }
     }

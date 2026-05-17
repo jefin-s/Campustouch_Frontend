@@ -39,7 +39,8 @@ const GoogleCallback = () => {
             if (role === 'admin') navigate('/admin-dashboard', { replace: true });
             else if (role === 'student') navigate('/student-dashboard', { replace: true });
             else if (role === 'applicant') navigate('/applicant-dashboard', { replace: true });
-            else navigate('/staff-dashboard', { replace: true });
+            else if (role === 'staff' || role === 'faculty') navigate('/staff-dashboard', { replace: true });
+            else navigate('/', { replace: true });
           } else {
             setError('Account verified, but your role could not be determined.');
           }

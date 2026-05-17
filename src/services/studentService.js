@@ -65,9 +65,8 @@ export const deleteStudent = async (id) => {
 
 export const approveStudent = async (payload) => {
   try {
-    // If payload is already an object, send it as is. 
-    // If it's just an ID (number/string), wrap it in an object for backward compatibility.
-    const body = typeof payload === 'object' ? payload : { id: payload };
+    // payload matches: { userId, courseId, departmentId, firstName, phoneNumber, email }
+    const body = typeof payload === 'object' ? payload : { userId: payload };
     const response = await api.post('/Student/approve-student', body);
     return response.data;
   } catch (error) {
@@ -86,8 +85,6 @@ export const getStudentProfile = async () => {
 
 export const getStudentAttendance = async (studentId = null) => {
   try {
-    // If studentId is provided, we can pass it as a query parameter just in case the backend expects it.
-    // However, for a /me endpoint, the backend usually relies on the token.
     const url = studentId ? `/Attendence/me?studentId=${studentId}` : '/Attendence/me';
     const response = await api.get(url);
     return response.data;
